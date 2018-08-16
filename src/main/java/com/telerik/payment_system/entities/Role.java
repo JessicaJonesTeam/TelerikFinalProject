@@ -1,7 +1,4 @@
-package com.telerik.payment_system.entity;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.core.GrantedAuthority;
+package com.telerik.payment_system.entities;
 
 import javax.persistence.*;
 import java.util.Set;

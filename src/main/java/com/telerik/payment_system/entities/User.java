@@ -1,6 +1,4 @@
-package com.telerik.payment_system.entity;
-
-import org.hibernate.annotations.GenericGenerator;
+package com.telerik.payment_system.entities;
 
 
 import javax.persistence.*;
