@@ -14,8 +14,6 @@ public class Role {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
-    private String authority;
 
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
@@ -26,7 +24,6 @@ public class Role {
 
     public Role(String name, String authority, Set<User> users) {
         this.name = name;
-        this.authority = authority;
         this.users = users;
     }
 
@@ -55,11 +52,5 @@ public class Role {
     }
 
 
-    public String getAuthority() {
-        return this.authority;
-    }
 
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
 }

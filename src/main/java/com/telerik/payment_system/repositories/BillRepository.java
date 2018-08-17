@@ -10,5 +10,5 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     List<Bill> findFirst10ByOrderByPaymentDateDesc();
 
     // A client should be able to see a history of the payments for its subscribers sorted descending by the date of payment
-    List<Bill> findAllByOrderByPaymentDateDesc();
+    List<Bill> findAllByOrderByUsePaymentDateDesc();
 }
