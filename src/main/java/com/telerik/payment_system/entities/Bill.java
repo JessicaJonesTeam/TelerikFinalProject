@@ -1,7 +1,6 @@
 package com.telerik.payment_system.entities;
 
 
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -43,6 +42,15 @@ public class Bill {
 
     }
 
+    public Bill(Service service, Subscriber subscriber, Date startDate, Date endDate, double amount, Currency currency, Date paymentDate) {
+        this.service = service;
+        this.subscriber = subscriber;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.amount = amount;
+        this.currency = currency;
+        this.paymentDate = paymentDate;
+    }
 
     public int getId() {
         return id;

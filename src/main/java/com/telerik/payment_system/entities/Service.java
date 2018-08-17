@@ -16,11 +16,16 @@ public class Service {
     @Column(name = "Service")
     private String service;
 
-    @OneToMany(mappedBy = "service",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "service", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Bill> bills;
 
     public Service() {
 
+    }
+
+    public Service(String service, List<Bill> bills) {
+        this.service = service;
+        this.bills = bills;
     }
 
     public Service(String service) {

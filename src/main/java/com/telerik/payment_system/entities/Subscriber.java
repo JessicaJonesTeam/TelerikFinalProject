@@ -36,6 +36,14 @@ public class Subscriber {
 
     }
 
+    public Subscriber(String phoneNumber, String firstName, String lastName, String egn, User bank, List<Bill> bills) {
+        this.phoneNumber = phoneNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.egn = egn;
+        this.bank = bank;
+        this.bills = bills;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;

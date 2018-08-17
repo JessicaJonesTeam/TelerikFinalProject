@@ -4,7 +4,9 @@ package com.telerik.payment_system.entities;
 import javax.persistence.*;
 import java.util.ArrayList;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -31,14 +33,20 @@ public class User {
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    private Set<Role> roles;
 
 
     public User() {
-        this.roles = new ArrayList<>();
+        this.roles = new HashSet<>();
     }
 
-
+    public User(String username, String password, String EIK, String email, Set<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.EIK = EIK;
+        this.email = email;
+        this.roles = roles;
+    }
 
     public long getId() {
         return id;
@@ -73,11 +81,11 @@ public class User {
         this.EIK = EIK;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -87,5 +95,9 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 }

@@ -20,9 +20,9 @@ public class AdminController {
 
 
     @GetMapping("/users")
-    public List<User> listUsers() {
-        List<User> users = userRepository.findAll();
+        public List<User> listUsers() {
+            List<User> users = userRepository.findAll();
 
-        return users;
+            return users;
     }
 }

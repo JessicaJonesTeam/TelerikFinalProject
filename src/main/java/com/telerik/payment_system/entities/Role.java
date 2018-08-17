@@ -24,6 +24,12 @@ public class Role {
     public Role() {
     }
 
+    public Role(String name, String authority, Set<User> users) {
+        this.name = name;
+        this.authority = authority;
+        this.users = users;
+    }
+
     public String getName() {
         return name;
     }

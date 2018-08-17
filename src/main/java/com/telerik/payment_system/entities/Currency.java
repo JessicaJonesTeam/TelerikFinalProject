@@ -1,6 +1,7 @@
 package com.telerik.payment_system.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,12 +23,13 @@ public class Currency {
     private List<Bill> bills;
 
     public Currency() {
-
+        this.bills = new ArrayList<>();
     }
 
-    public Currency(String currency, double exchangeRate) {
+    public Currency(String currency, double exchangeRate, List<Bill> bills) {
         this.currency = currency;
         this.exchangeRate = exchangeRate;
+        this.bills = bills;
     }
 
     public int getCurrencyId() {

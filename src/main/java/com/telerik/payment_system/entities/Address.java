@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "addresses")
 public class Address {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AddressID")
@@ -27,6 +28,12 @@ public class Address {
 
     }
 
+    public Address(String country, String city, String zipCode, String street) {
+        this.country = country;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.street = street;
+    }
 
     public int getAddressId() {
         return addressId;
