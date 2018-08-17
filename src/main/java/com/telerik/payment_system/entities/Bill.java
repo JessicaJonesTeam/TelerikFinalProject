@@ -1,15 +1,20 @@
 package com.telerik.payment_system.entities;
 
+import com.telerik.payment_system.entities.Currency;
+import com.telerik.payment_system.entities.Service;
+import com.telerik.payment_system.entities.Subscriber;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "bills")
 public class Bill {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BillID")
-    private int billId;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "ServiceID")
@@ -18,10 +23,6 @@ public class Bill {
     @ManyToOne
     @JoinColumn(name = "SubscriberID")
     private Subscriber subscriber;
-
-    @ManyToOne
-    @JoinColumn(name = "CurrencyID")
-    private Currency currency;
 
     @Column(name = "StartDate")
     private Date startDate;
@@ -32,19 +33,34 @@ public class Bill {
     @Column(name = "Amount")
     private double amount;
 
+    @ManyToOne
+    @JoinColumn(name = "CurrencyID")
+    private Currency currency;
+
     @Column(name = "PaymentDate")
     private Date paymentDate;
 
-
     public Bill() {
+
     }
 
-    public int getBillId() {
-        return billId;
+    public Bill(Service service, Subscriber subscriber, Date startDate, Date endDate,
+                double amount, Currency currency, Date paymentDate) {
+        this.service = service;
+        this.subscriber = subscriber;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.amount = amount;
+        this.currency = currency;
+        this.paymentDate = paymentDate;
     }
 
-    public void setBillId(int billId) {
-        this.billId = billId;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Service getService() {
@@ -61,14 +77,6 @@ public class Bill {
 
     public void setSubscriber(Subscriber subscriber) {
         this.subscriber = subscriber;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
     }
 
     public Date getStartDate() {
@@ -93,6 +101,14 @@ public class Bill {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     public Date getPaymentDate() {

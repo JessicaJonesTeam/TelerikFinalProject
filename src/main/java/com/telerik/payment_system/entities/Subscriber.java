@@ -1,12 +1,13 @@
 package com.telerik.payment_system.entities;
 
-
-
 import javax.persistence.*;
+import java.util.List;
+
 
 @Entity
 @Table(name = "subscribers")
 public class Subscriber {
+
     @Id
     @Column(name = "PhoneNumber")
     private String phoneNumber;
@@ -18,19 +19,26 @@ public class Subscriber {
     private String lastName;
 
     @Column(name = "EGN")
-    private String EGN;
-
-    @ManyToOne
-    @Column(name = "AddressID")
-    private Address address;
+    private String egn;
 
     @ManyToOne
     @JoinColumn(name = "BankID")
     private User bank;
 
+    @OneToMany(mappedBy = "subscriber")
+    private List<Bill> bills;
+
     public Subscriber() {
+
     }
 
+    public Subscriber(String phoneNumber, String firstName, String lastName, String egn, User bank) {
+        this.phoneNumber = phoneNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.egn = egn;
+        this.bank = bank;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -56,20 +64,12 @@ public class Subscriber {
         this.lastName = lastName;
     }
 
-    public String getEGN() {
-        return EGN;
+    public String getEgn() {
+        return egn;
     }
 
-    public void setEGN(String EGN) {
-        this.EGN = EGN;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setEgn(String egn) {
+        this.egn = egn;
     }
 
     public User getBank() {
@@ -80,5 +80,11 @@ public class Subscriber {
         this.bank = bank;
     }
 
+    public List<Bill> getBills() {
+        return bills;
+    }
 
+    public void setBills(List<Bill> bills) {
+        this.bills = bills;
+    }
 }
