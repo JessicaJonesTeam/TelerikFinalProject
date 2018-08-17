@@ -7,8 +7,11 @@ import java.util.List;
 @Entity
 @Table(name = "subscribers")
 public class Subscriber {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
+
     @Column(name = "PhoneNumber")
     private String phoneNumber;
 
@@ -28,17 +31,11 @@ public class Subscriber {
     @OneToMany(mappedBy = "subscriber")
     private List<Bill> bills;
 
+
     public Subscriber() {
 
     }
 
-    public Subscriber(String phoneNumber, String firstName, String lastName, String egn, User bank) {
-        this.phoneNumber = phoneNumber;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.egn = egn;
-        this.bank = bank;
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -86,5 +83,13 @@ public class Subscriber {
 
     public void setBills(List<Bill> bills) {
         this.bills = bills;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
