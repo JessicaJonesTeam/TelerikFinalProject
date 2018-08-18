@@ -1,6 +1,8 @@
 package com.telerik.payment_system.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -15,10 +17,12 @@ public class Bill {
 
     @ManyToOne
     @JoinColumn(name = "ServiceID")
+    @JsonIgnore
     private Service service;
 
     @ManyToOne
     @JoinColumn(name = "SubscriberID")
+    @JsonIgnore
     private Subscriber subscriber;
 
     @Column(name = "StartDate")
@@ -32,6 +36,7 @@ public class Bill {
 
     @ManyToOne
     @JoinColumn(name = "CurrencyID")
+    @JsonIgnore
     private Currency currency;
 
     @Column(name = "PaymentDate")
