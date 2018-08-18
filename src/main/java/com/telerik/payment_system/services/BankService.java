@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface BankService {
 
-    List<Bill> getAllNonePaymentBillsForSubscriber(String phoneNumber);
+    List<Bill> getAllNonPaymentBillsForSubscriber(String phoneNumber);
+    Subscriber findByPhoneNumber(String phoneNumber);
 }

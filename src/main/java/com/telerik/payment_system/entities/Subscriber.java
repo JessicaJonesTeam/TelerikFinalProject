@@ -1,5 +1,7 @@
 package com.telerik.payment_system.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -26,9 +28,11 @@ public class Subscriber {
 
     @ManyToOne
     @JoinColumn(name = "BankID")
+    @JsonIgnore
     private User bank;
 
     @OneToMany(mappedBy = "subscriber")
+    @JsonIgnore
     private List<Bill> bills;
 
 

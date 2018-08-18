@@ -2,6 +2,7 @@ package com.telerik.payment_system.controllers;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.telerik.payment_system.entities.Bill;
+import com.telerik.payment_system.entities.Subscriber;
 import com.telerik.payment_system.services.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,12 @@ public class BankController {
 
     @GetMapping("/{phoneNumber}")
     public List<Bill> getAllNonePaymentBillsForSubscriber(@PathVariable("phoneNumber") String phoneNumber){
-        return bankService.getAllNonePaymentBillsForSubscriber(phoneNumber);
+        return bankService.getAllNonPaymentBillsForSubscriber(phoneNumber);
+    }
+
+    @GetMapping("/subscribers/{phoneNumber}")
+    public Subscriber getSubscriberDetails(@PathVariable("phoneNumber") String phoneNumber){
+        return bankService.findByPhoneNumber(phoneNumber);
     }
 
 }
