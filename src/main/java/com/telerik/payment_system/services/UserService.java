@@ -10,15 +10,15 @@ import java.util.List;
 public interface UserService {
     User getByUsername(String username);
 
-    User saveUser(UserBindingModel userDTO);
+    User saveUser(User user);
 
     List<User> getAllUsers();
 
     User getUserById(Long id);
 
-    User editUser(Long id, UserBindingModel userEditBindingModel);
+    User editUser(Long id, User user);
 
-    void deleteUser(String name);
+    void deleteUser(Long id);
 
 
 }

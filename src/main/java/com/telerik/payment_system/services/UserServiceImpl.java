@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private final ModelMapper modelMapper;
 
 
     @Autowired
@@ -34,17 +33,16 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.modelMapper = modelMapper;
     }
 
     public User getByUsername(final String username) {
         return this.userRepository.findByUsername(username);
     }
 
-    public User saveUser(final UserBindingModel userRegistrationBindingModel) {
-        User user = modelMapper.map(userRegistrationBindingModel, User.class);
+    public User saveUser(final User feed) {
+        User user=new User();
         Role userRole = this.roleRepository.findByName("ROLE_USER");
-        user.setPassword(bCryptPasswordEncoder.encode(userRegistrationBindingModel.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(feed.getPassword()));
         user.addRole(userRole);
         return this.userRepository.save(user);
     }
@@ -60,20 +58,19 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    public User editUser(Long id, UserBindingModel userEditBindingModel) {
+    public User editUser(Long id, User feed) {
         User user = this.getUserById(id);
-        user.setEmail(userEditBindingModel.getEmail());
-        user.setUsername(userEditBindingModel.getUsername());
-        user.setEIK(userEditBindingModel.getEIK());
-        Set<Role> roles = new HashSet<>();
+        user.setEmail(feed.getEmail());
+        user.setUsername(feed.getUsername());
+        user.setEIK(feed.getEIK());
+        Set<Role> roles = feed.getRoles();
 
-//        TODO: EDIT ROLES
 
         return this.userRepository.save(user);
     }
 
-    public void deleteUser(String username) {
-        this.userRepository.deleteByUsername(username);
+    public void deleteUser(Long id) {
+        this.userRepository.deleteById(id);
     }
 
 
