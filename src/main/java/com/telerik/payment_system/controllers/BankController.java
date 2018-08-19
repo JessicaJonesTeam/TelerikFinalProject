@@ -24,13 +24,16 @@ public class BankController {
     }
 
     @GetMapping("/{phoneNumber}")
-    public List<Bill> getAllNonePaymentBillsForSubscriber(@PathVariable("phoneNumber") String phoneNumber){
+    public List<Bill> getAllNonePaymentBillsForSubscriber(@PathVariable("phoneNumber") String phoneNumber) {
         return bankService.getAllNonPaymentBillsForSubscriber(phoneNumber);
     }
 
     @GetMapping("/subscribers/{phoneNumber}")
-    public Subscriber getSubscriberDetails(@PathVariable("phoneNumber") String phoneNumber){
+    public Subscriber getSubscriberDetails(@PathVariable("phoneNumber") String phoneNumber) {
         return bankService.findByPhoneNumber(phoneNumber);
     }
+
+
+
 
 }

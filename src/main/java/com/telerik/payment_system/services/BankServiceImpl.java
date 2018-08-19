@@ -20,7 +20,6 @@ public class BankServiceImpl implements BankService {
         this.subscriberRepository = subscriberRepository;
     }
 
-
     @Override
 
     public List<Bill> getAllNonPaymentBillsForSubscriber(String phoneNumber) {
@@ -31,5 +30,7 @@ public class BankServiceImpl implements BankService {
     public Subscriber findByPhoneNumber(String phoneNumber) {
         return subscriberRepository.findByPhoneNumber(phoneNumber);
     }
+
+
 
 }

@@ -13,7 +13,7 @@ public class Role {
     @Column
     private long id;
 
-    @Column( nullable = false)
+    @Column(nullable = false)
     private String name;
 
 
@@ -25,9 +25,9 @@ public class Role {
     public Role() {
     }
 
-    public Role(String name, String authority, Set<User> users) {
-        this.name = name;
+    public Role(String name, Set<User> users) {
         this.users = users;
+        this.name = name;
     }
 
     public String getName() {
@@ -53,7 +53,6 @@ public class Role {
     public void setId(long id) {
         this.id = id;
     }
-
 
 
 }

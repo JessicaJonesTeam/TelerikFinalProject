@@ -1,5 +1,7 @@
 package com.telerik.payment_system.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 import java.util.List;
@@ -17,6 +19,7 @@ public class Service {
     private String service;
 
     @OneToMany(mappedBy = "service", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Bill> bills;
 
     public Service() {
