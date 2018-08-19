@@ -12,34 +12,31 @@ public class Bill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "BillID")
+    @Column
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "ServiceID")
-    @JsonIgnore
+    @JoinColumn(name = "service_id")
     private Service service;
 
     @ManyToOne
-    @JoinColumn(name = "SubscriberID")
-    @JsonIgnore
+    @JoinColumn(name = "subscriber_id")
     private Subscriber subscriber;
 
-    @Column(name = "StartDate")
+    @Column
     private Date startDate;
 
-    @Column(name = "EndDate")
+    @Column
     private Date endDate;
 
-    @Column(name = "Amount")
+    @Column
     private double amount;
 
     @ManyToOne
-    @JoinColumn(name = "CurrencyID")
-    @JsonIgnore
+    @JoinColumn(name = "currency_id")
     private Currency currency;
 
-    @Column(name = "PaymentDate")
+    @Column
     private Date paymentDate;
 
 

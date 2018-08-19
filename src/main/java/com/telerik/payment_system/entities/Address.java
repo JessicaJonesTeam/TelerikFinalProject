@@ -9,19 +9,19 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "AddressID")
-    private int addressId;
+    @Column
+    private int id;
 
-    @Column(name = "Country")
+    @Column
     private String country;
 
-    @Column(name = "City")
+    @Column
     private String city;
 
-    @Column(name = "ZipCode")
+    @Column
     private String zipCode;
 
-    @Column(name = "Street")
+    @Column
     private String street;
 
     public Address() {
@@ -36,11 +36,11 @@ public class Address {
     }
 
     public int getAddressId() {
-        return addressId;
+        return id;
     }
 
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
+    public void setAddressId(int id) {
+        this.id = id;
     }
 
     public String getCountry() {

@@ -11,24 +11,23 @@ import java.util.List;
 public class Subscriber {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column
     private long id;
 
-    @Column(name = "PhoneNumber")
+    @Column
     private String phoneNumber;
 
-    @Column(name = "FirstName")
+    @Column
     private String firstName;
 
-    @Column(name = "LastName")
+    @Column
     private String lastName;
 
-    @Column(name = "EGN")
+    @Column
     private String egn;
 
     @ManyToOne
-    @JoinColumn(name = "BankID")
-    @JsonIgnore
+    @JoinColumn(name = "bank_id")
     private User bank;
 
     @OneToMany(mappedBy = "subscriber")

@@ -10,10 +10,10 @@ public class Service {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ServiceID")
-    private long serviceId;
+    @Column
+    private long id;
 
-    @Column(name = "Service")
+    @Column
     private String service;
 
     @OneToMany(mappedBy = "service", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -33,11 +33,11 @@ public class Service {
     }
 
     public long getServiceId() {
-        return serviceId;
+        return id;
     }
 
     public void setServiceId(long serviceId) {
-        this.serviceId = serviceId;
+        this.id = serviceId;
     }
 
     public String getService() {

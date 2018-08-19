@@ -15,19 +15,19 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column
     private long id;
 
-    @Column(name = "username")
+    @Column
     private String username;
 
-    @Column(name = "password")
+    @Column
     private String password;
 
-    @Column(name = "EIK")
+    @Column
     private String EIK;
 
-    @Column(name = "email")
+    @Column
     private String email;
 
 

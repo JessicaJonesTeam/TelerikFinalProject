@@ -1,5 +1,7 @@
 package com.telerik.payment_system.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +12,17 @@ public class Currency {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CurrencyID")
-    private int currencyId;
+    @Column
+    private int id;
 
-    @Column(name = "Currency")
+    @Column
     private String currency;
 
-    @Column(name = "ExchangeRate")
+    @Column
     private double exchangeRate;
 
     @OneToMany(mappedBy = "currency")
+    @JsonIgnore
     private List<Bill> bills;
 
     public Currency() {
@@ -33,11 +36,11 @@ public class Currency {
     }
 
     public int getCurrencyId() {
-        return currencyId;
+        return id;
     }
 
     public void setCurrencyId(int currencyId) {
-        this.currencyId = currencyId;
+        this.id = currencyId;
     }
 
     public String getCurrency() {
