@@ -1,4 +1,4 @@
-package com.telerik.payment_system.models;
+package com.telerik.payment_system.entities.viewModels;
 
 
 public class UserBindingModel {

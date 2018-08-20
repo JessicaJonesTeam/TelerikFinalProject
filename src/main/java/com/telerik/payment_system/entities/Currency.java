@@ -66,4 +66,8 @@ public class Currency {
     public void setBills(List<Bill> bills) {
         this.bills = bills;
     }
+
+    public void addBill(Bill bill){
+        this.bills.add(bill);
+    }
 }

@@ -1,24 +1,26 @@
-package com.telerik.payment_system.services;
+package com.telerik.payment_system.services.base;
 
+import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.User;
-import com.telerik.payment_system.models.UserBindingModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface UserService {
     User getByUsername(String username);
 
-    User saveUser(User user);
-
     List<User> getAllUsers();
 
     User getUserById(Long id);
 
-    User editUser(Long id, User user);
+    void createUser(User user);
+
+    void editUser(Long id, User user);
 
     void deleteUser(Long id);
 
+   void createPayment(Bill billFeed);
 
 }

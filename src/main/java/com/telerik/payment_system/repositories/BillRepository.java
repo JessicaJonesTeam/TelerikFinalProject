@@ -21,6 +21,4 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     List<Bill> findFirst10ByOrderByPaymentDateDesc();
 
 
-
-
 }
