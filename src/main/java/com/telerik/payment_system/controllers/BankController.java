@@ -27,12 +27,23 @@ public class BankController {
         return bankService.getAllNonPaymentBillsForSubscriber(phoneNumber);
     }
 
-    @GetMapping("/subscribers/{phoneNumber}")
+    @GetMapping("/subscribers/details/{phoneNumber}")
     public Subscriber getSubscriberDetails(@PathVariable("phoneNumber") String phoneNumber) {
         return bankService.findByPhoneNumber(phoneNumber);
     }
 
+    @GetMapping("/subscribers/history/{phoneNumber}")
+    public List<Bill> getHistoryBySubscriber(@PathVariable("phoneNumber") String phoneNumber){
+        return bankService.getHistoryBySubscriber(phoneNumber);
+    }
 
+    @GetMapping("/subscribers/average/{phoneNumber}")
+    public Double averageAmount(@PathVariable("phoneNumber") String phoneNumber){
+        return bankService.averageAmount(phoneNumber);
+    }
 
-
+    @GetMapping("/subscribers/max/{phoneNumber}")
+    public Double maxAmoubnt(@PathVariable("phoneNumber") String phoneNumber){
+        return bankService.maxAmount(phoneNumber);
+    }
 }

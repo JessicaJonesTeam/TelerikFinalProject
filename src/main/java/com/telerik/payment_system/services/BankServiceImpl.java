@@ -29,9 +29,33 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public Subscriber findByPhoneNumber(String phoneNumber) {
-        return subscriberRepository.findByPhoneNumber(phoneNumber);
+        return subscriberRepository.getByPhoneNumber(phoneNumber);
     }
 
+    @Override
+    public List<Bill> getHistoryBySubscriber(String phoneNumber) {
+        return billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(phoneNumber);
+    }
+
+    @Override
+    public Double averageAmount(String phoneNumber) {
+        List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(phoneNumber);
+        double sum = 0;
+        for (Bill bill: bills) {
+            sum += bill.getAmount();
+        }
+        return sum/bills.size();
+    }
+
+    @Override
+    public Double maxAmount(String phoneNumber) {
+        List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(phoneNumber);
+        double max = 0;
+        for (Bill bill: bills) {
+            max = Math.max(max, bill.getAmount());
+        }
+        return max;
+    }
 
 
 }

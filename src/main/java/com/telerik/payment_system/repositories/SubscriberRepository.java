@@ -11,8 +11,5 @@ public interface SubscriberRepository extends JpaRepository<Subscriber, Long> {
     //    The client must be able to see personal details of a subscriber
     Subscriber getByPhoneNumber(String phoneNumber);
 
-    Subscriber getById(Long id);
-
-    Subscriber findByPhoneNumber(String phoneNumber);
 }
 

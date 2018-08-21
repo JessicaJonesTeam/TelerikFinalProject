@@ -9,4 +9,8 @@ public interface BankService {
 
     List<Bill> getAllNonPaymentBillsForSubscriber(String phoneNumber);
     Subscriber findByPhoneNumber(String phoneNumber);
+    List<Bill> getHistoryBySubscriber(String phoneNumber);
+    Double averageAmount (String phoneNumber);
+    Double maxAmount (String phoneNumber);
+
 }
