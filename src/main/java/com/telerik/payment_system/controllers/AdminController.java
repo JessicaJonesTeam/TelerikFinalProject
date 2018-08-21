@@ -32,7 +32,7 @@ public class AdminController {
         return users;
     }
 
-    @PostMapping("users/create/")
+    @PostMapping("users/create")
     public void createUser(@RequestBody User user) {
 //       TODO: Handle if user is null
         this.userService.createUser(user);

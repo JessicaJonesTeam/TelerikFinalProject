@@ -1,20 +1,22 @@
 package com.telerik.payment_system.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-public class Role {
+public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private long id;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String authority;
 
 
     @ManyToMany(mappedBy = "roles")
@@ -23,20 +25,14 @@ public class Role {
 
 
     public Role() {
+        this.users = new HashSet<>();
     }
 
-    public Role(String name, Set<User> users) {
-        this.users = users;
-        this.name = name;
+    public Role(String authority) {
+        this.authority = authority;
+        this.users = new HashSet<>();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Set<User> getUsers() {
         return users;
@@ -54,5 +50,14 @@ public class Role {
         this.id = id;
     }
 
+
+    @Override
+    public String getAuthority() {
+        return this.authority;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
+    }
 
 }

@@ -8,6 +8,8 @@ import com.telerik.payment_system.repositories.RoleRepository;
 import com.telerik.payment_system.repositories.UserRepository;
 import com.telerik.payment_system.services.base.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +37,7 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.billRepository=billRepository;
+        this.billRepository = billRepository;
     }
 
     public User getByUsername(String username) {
@@ -44,11 +46,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(User feed) {
-        User user = new User();
-        Role userRole = this.roleRepository.findByName("ROLE_USER");
-        user.setPassword(bCryptPasswordEncoder.encode(feed.getPassword()));
-        user.addRole(userRole);
+        User user = new User(
+                feed.getUsername(),
+                feed.getEmail(),
+                feed.getEIK(),
+                bCryptPasswordEncoder.encode(feed.getPassword())
+        );
+
+        Role userRole = this.roleRepository.findByAuthority("ROLE_USER");
+
+        user.getRoles().add(userRole);
+
         this.userRepository.saveAndFlush(user);
+        this.roleRepository.saveAndFlush(userRole);
     }
 
     @Override
@@ -69,8 +79,6 @@ public class UserServiceImpl implements UserService {
         user.setEmail(feed.getEmail());
         user.setUsername(feed.getUsername());
         user.setEIK(feed.getEIK());
-        Set<Role> roles = feed.getRoles();
-
 
         this.userRepository.saveAndFlush(user);
     }
@@ -86,4 +94,14 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = this.userRepository.findByUsername(username);
+
+        if(user == null) {
+            throw new UsernameNotFoundException("Username was not found.");
+        }
+
+        return user;
+    }
 }
