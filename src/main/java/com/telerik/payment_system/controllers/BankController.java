@@ -4,10 +4,7 @@ import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.Subscriber;
 import com.telerik.payment_system.services.base.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,7 +40,13 @@ public class BankController {
     }
 
     @GetMapping("/subscribers/max/{phoneNumber}")
-    public Double maxAmoubnt(@PathVariable("phoneNumber") String phoneNumber){
+    public Double maxAmount(@PathVariable("phoneNumber") String phoneNumber){
         return bankService.maxAmount(phoneNumber);
     }
+
+    @PutMapping("subscriber/pay/{phoneNumber}")
+    public void payAllBillsBySubscriber (@PathVariable ("phoneNumber") String phoneNumber){
+        bankService.payAllBillsBySubscriber(phoneNumber);
+    }
+
 }

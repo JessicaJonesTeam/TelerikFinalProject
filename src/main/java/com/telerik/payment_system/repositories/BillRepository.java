@@ -1,7 +1,7 @@
 package com.telerik.payment_system.repositories;
 
 import com.telerik.payment_system.entities.Bill;
-import com.telerik.payment_system.entities.Subscriber;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
