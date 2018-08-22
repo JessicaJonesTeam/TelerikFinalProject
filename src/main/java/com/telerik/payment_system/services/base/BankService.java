@@ -14,5 +14,6 @@ public interface BankService {
     Double averageAmount (String phoneNumber);
     Double maxAmount (String phoneNumber);
     void payAllBillsBySubscriber(String phoneNumber);
+    List<Service> getAllServices (String phoneNumber);
 
 }

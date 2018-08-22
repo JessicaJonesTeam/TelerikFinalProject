@@ -2,6 +2,7 @@ package com.telerik.payment_system.repositories;
 
 import com.telerik.payment_system.entities.Bill;
 
+import com.telerik.payment_system.entities.Service;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,6 +15,5 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
 
     // A client should be able to see a history of the payments for its subscribers sorted descending by the date of payment
     List<Bill> getAllBySubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc (String phoneNumber);
-
 
 }

@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -67,8 +68,18 @@ public class BankServiceImpl implements BankService {
     public void payAllBillsBySubscriber(String phoneNumber) {
         List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(phoneNumber);
         for (Bill bill : bills) {
-            bill.setPaymentDate(new Date());
+            bill.setPaymentDate(new Date(System.currentTimeMillis()));
         }
+    }
+
+    @Override
+    public List<com.telerik.payment_system.entities.Service> getAllServices(String phoneNumber) {
+        List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(phoneNumber);
+        List<com.telerik.payment_system.entities.Service> services = new ArrayList<>();
+        for (Bill bill : bills) {
+            services.add(bill.getService());
+        }
+        return services;
     }
 
 

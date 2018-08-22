@@ -1,6 +1,7 @@
 package com.telerik.payment_system.controllers;
 
 import com.telerik.payment_system.entities.Bill;
+import com.telerik.payment_system.entities.Service;
 import com.telerik.payment_system.entities.Subscriber;
 import com.telerik.payment_system.services.base.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,23 +31,29 @@ public class BankController {
     }
 
     @GetMapping("/subscribers/history/{phoneNumber}")
-    public List<Bill> getHistoryBySubscriber(@PathVariable("phoneNumber") String phoneNumber){
+    public List<Bill> getHistoryBySubscriber(@PathVariable("phoneNumber") String phoneNumber) {
         return bankService.getHistoryBySubscriber(phoneNumber);
     }
 
     @GetMapping("/subscribers/average/{phoneNumber}")
-    public Double averageAmount(@PathVariable("phoneNumber") String phoneNumber){
+    public Double averageAmount(@PathVariable("phoneNumber") String phoneNumber) {
         return bankService.averageAmount(phoneNumber);
     }
 
     @GetMapping("/subscribers/max/{phoneNumber}")
-    public Double maxAmount(@PathVariable("phoneNumber") String phoneNumber){
+    public Double maxAmount(@PathVariable("phoneNumber") String phoneNumber) {
         return bankService.maxAmount(phoneNumber);
     }
 
-    @PutMapping("subscriber/pay/{phoneNumber}")
-    public void payAllBillsBySubscriber (@PathVariable ("phoneNumber") String phoneNumber){
+    @GetMapping("subscriber/pay/{phoneNumber}")
+    public void payAllBillsBySubscriber(@PathVariable("phoneNumber") String phoneNumber) {
         bankService.payAllBillsBySubscriber(phoneNumber);
     }
+
+    @GetMapping("subscriber/service/{phoneNumber}")
+    public List<Service> getAllServices(@PathVariable("phoneNumber") String phoneNumber) {
+        return bankService.getAllServices(phoneNumber);
+    }
+
 
 }

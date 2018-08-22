@@ -14,22 +14,17 @@ import java.util.List;
 //@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
-    private final UserRepository userRepository;
-
     private final UserService userService;
 
     @Autowired
-    public AdminController(UserRepository userRepository, UserService userService) {
-        this.userRepository = userRepository;
+    public AdminController( UserService userService) {
         this.userService = userService;
     }
 
 
     @GetMapping("/users")
     public List<User> listUsers() {
-        List<User> users = userRepository.findAll();
-
-        return users;
+        return userService.getAllUsers();
     }
 
     @PostMapping("users/create")
