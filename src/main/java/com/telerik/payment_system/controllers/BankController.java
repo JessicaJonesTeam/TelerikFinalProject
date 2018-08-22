@@ -7,6 +7,7 @@ import com.telerik.payment_system.services.base.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -55,5 +56,9 @@ public class BankController {
         return bankService.getAllServices(phoneNumber);
     }
 
+    @GetMapping("subscriber/top10")
+    public HashMap<Subscriber, Double> findTop10() {
+        return bankService.findTop10();
+    }
 
 }

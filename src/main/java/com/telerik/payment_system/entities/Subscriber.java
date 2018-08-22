@@ -103,4 +103,12 @@ public class Subscriber {
     public void setId(long id) {
         this.id = id;
     }
+
+
+    @Override
+    public String toString() {
+        return firstName + " " +
+                lastName + " " +
+                phoneNumber + " ";
+    }
 }

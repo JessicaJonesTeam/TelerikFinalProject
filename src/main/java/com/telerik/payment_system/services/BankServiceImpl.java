@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -81,6 +82,41 @@ public class BankServiceImpl implements BankService {
         }
         return services;
     }
+
+    @Override
+    public HashMap<Subscriber,Double> findTop10() {
+
+        HashMap<Subscriber,Double> top10 = new HashMap<>();
+        List<Bill> bills = billRepository.findAll();
+        for (Bill bill : bills) {
+            if(!top10.containsKey(bill.getSubscriber())){
+                top10.put(bill.getSubscriber(),bill.getAmount());
+            }else {
+                double temp = top10.get(bill.getSubscriber());
+                top10.put(bill.getSubscriber(),bill.getAmount() + temp);
+            }
+        }
+
+        return top10;
+    }
+
+
+//    @Override
+//    public HashMap<String, Double> findTop10() {
+//        HashMap<String,Double> top10 = new HashMap<>();
+//        List<Bill> bills = billRepository.findAll();
+//        for (Bill bill : bills) {
+//            if(!top10.containsKey(bill.getSubscriber().getPhoneNumber())){
+//                top10.put(bill.getSubscriber().getPhoneNumber(),bill.getAmount());
+//            }else {
+//                double temp = top10.get(bill.getSubscriber().getPhoneNumber());
+//                top10.put(bill.getSubscriber().getPhoneNumber(),bill.getAmount() + temp);
+//            }
+//        }
+//
+//
+//        return top10;
+//    }
 
 
 }
