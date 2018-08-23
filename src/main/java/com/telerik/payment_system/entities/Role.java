@@ -1,6 +1,7 @@
 package com.telerik.payment_system.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -13,14 +14,16 @@ public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private long id;
 
     @Column(nullable = false, unique = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String authority;
 
 
     @ManyToMany(mappedBy = "roles")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<User> users;
 
 

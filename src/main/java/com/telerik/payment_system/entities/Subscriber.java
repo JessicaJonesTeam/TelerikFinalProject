@@ -1,6 +1,7 @@
 package com.telerik.payment_system.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,7 +32,7 @@ public class Subscriber {
     private User bank;
 
     @OneToMany(mappedBy = "subscriber")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Bill> bills;
 
 

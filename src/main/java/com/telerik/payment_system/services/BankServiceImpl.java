@@ -20,13 +20,11 @@ public class BankServiceImpl implements BankService {
 
     private final BillRepository billRepository;
     private final SubscriberRepository subscriberRepository;
-    private final ServiceRepository serviceRepository;
 
     @Autowired
     public BankServiceImpl(BillRepository billRepository, SubscriberRepository subscriberRepository, ServiceRepository serviceRepository) {
         this.billRepository = billRepository;
         this.subscriberRepository = subscriberRepository;
-        this.serviceRepository = serviceRepository;
     }
 
     @Override
@@ -84,39 +82,19 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public HashMap<Subscriber,Double> findTop10() {
+    public HashMap<Subscriber, Double> findTop10() {
 
-        HashMap<Subscriber,Double> top10 = new HashMap<>();
+        HashMap<Subscriber, Double> top10 = new HashMap<>();
         List<Bill> bills = billRepository.findAll();
         for (Bill bill : bills) {
-            if(!top10.containsKey(bill.getSubscriber())){
-                top10.put(bill.getSubscriber(),bill.getAmount());
-            }else {
+            if (!top10.containsKey(bill.getSubscriber())) {
+                top10.put(bill.getSubscriber(), bill.getAmount());
+            } else {
                 double temp = top10.get(bill.getSubscriber());
-                top10.put(bill.getSubscriber(),bill.getAmount() + temp);
+                top10.put(bill.getSubscriber(), bill.getAmount() + temp);
             }
         }
-
         return top10;
     }
-
-
-//    @Override
-//    public HashMap<String, Double> findTop10() {
-//        HashMap<String,Double> top10 = new HashMap<>();
-//        List<Bill> bills = billRepository.findAll();
-//        for (Bill bill : bills) {
-//            if(!top10.containsKey(bill.getSubscriber().getPhoneNumber())){
-//                top10.put(bill.getSubscriber().getPhoneNumber(),bill.getAmount());
-//            }else {
-//                double temp = top10.get(bill.getSubscriber().getPhoneNumber());
-//                top10.put(bill.getSubscriber().getPhoneNumber(),bill.getAmount() + temp);
-//            }
-//        }
-//
-//
-//        return top10;
-//    }
-
 
 }

@@ -1,6 +1,7 @@
 package com.telerik.payment_system.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class Currency {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private int id;
 
     @Column
