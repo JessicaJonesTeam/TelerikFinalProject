@@ -46,17 +46,17 @@ public class BankController {
         return bankService.maxAmount(phoneNumber);
     }
 
-    @GetMapping("subscriber/pay/{phoneNumber}")
+    @GetMapping("subscribers/pay/{phoneNumber}")
     public void payAllBillsBySubscriber(@PathVariable("phoneNumber") String phoneNumber) {
         bankService.payAllBillsBySubscriber(phoneNumber);
     }
 
-    @GetMapping("subscriber/service/{phoneNumber}")
+    @GetMapping("subscribers/service/{phoneNumber}")
     public List<Service> getAllServices(@PathVariable("phoneNumber") String phoneNumber) {
         return bankService.getAllServices(phoneNumber);
     }
 
-    @GetMapping("subscriber/top10")
+    @GetMapping("subscribers/top10")
     public HashMap<Subscriber, Double> findTop10() {
         return bankService.findTop10();
     }

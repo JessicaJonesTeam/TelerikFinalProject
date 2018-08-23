@@ -36,15 +36,14 @@ public class AdminController {
     @PutMapping("users/update/{id}")
     public void updateUser(@PathVariable("id") String userId, @RequestBody User user) {
 //       TODO; handle if id doesnt exist
-        long id = Long.parseLong(userId);
-        userService.editUser(id, user);
+
+        userService.editUser(userId, user);
     }
 
     @DeleteMapping("users/delete/{id}")
     public void deleteUser(@PathVariable("id") String userId) {
         //       TODO; handle if id doesnt exist
-        long id = Long.parseLong(userId);
-        userService.deleteUser(id);
+        userService.deleteUser(userId);
     }
 
     @PostMapping("bills/create/")

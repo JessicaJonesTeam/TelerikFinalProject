@@ -15,9 +15,9 @@ public interface UserService extends UserDetailsService {
 
     void createUser(User user);
 
-    void editUser(Long id, User user);
+    void editUser(String id, User user);
 
-    void deleteUser(Long id);
+    void deleteUser(String id);
 
    void createPayment(Bill billFeed);
 
