@@ -10,21 +10,14 @@ import java.util.List;
 
 public interface BankService {
 
-    List<Bill> getAllNonPaymentBillsForSubscriber(String phoneNumber);
-
-    /**
-     * bla
-     * @param phoneNumber
-     * @return
-     */
+    List<Bill> getAllNonPaymentBillsForSubscriber(String bankId, String phoneNumber);
     Subscriber findByPhoneNumber(String phoneNumber);
     List<Bill> getHistoryBySubscriber(String phoneNumber);
     Double averageAmount (String phoneNumber);
     Double maxAmount (String phoneNumber);
-    void payAllBillsBySubscriber(String phoneNumber);
+    void payAllBillsBySubscriber(String bankId, String phoneNumber);
     List<Service> getAllServices (String phoneNumber);
-//    HashMap<String, Double> findTop10 ();
     HashMap<Subscriber, Double> findTop10();
 
-    List<Bill> getNon(Date startDate, Date endDate, String phoneNumber);
+
 }

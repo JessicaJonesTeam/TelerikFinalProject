@@ -28,9 +28,9 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-
-    public List<Bill> getAllNonPaymentBillsForSubscriber(String phoneNumber) {
-        return billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(phoneNumber);
+    public List<Bill> getAllNonPaymentBillsForSubscriber(String bankId, String phoneNumber) {
+        long id = Long.parseLong(bankId);
+        return billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(id, phoneNumber);
     }
 
     @Override
@@ -64,8 +64,9 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public void payAllBillsBySubscriber(String phoneNumber) {
-        List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(phoneNumber);
+    public void payAllBillsBySubscriber(String bankId, String phoneNumber) {
+        long id = Long.parseLong(bankId);
+        List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(id, phoneNumber);
         for (Bill bill : bills) {
             bill.setPaymentDate(new Date(System.currentTimeMillis()));
             this.billRepository.saveAndFlush(bill);
@@ -98,9 +99,6 @@ public class BankServiceImpl implements BankService {
         return top10;
     }
 
-    @Override
-    public List<Bill> getNon(Date startDate, Date endDate, String phoneNumber) {
-        return billRepository.getAllByStartDateAndEndDateAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(startDate,endDate,phoneNumber);
-    }
+
 
 }

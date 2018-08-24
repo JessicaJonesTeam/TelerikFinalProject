@@ -22,9 +22,12 @@ public class BankController {
         this.bankService = bankService;
     }
 
-    @GetMapping("/{phoneNumber}")
-    public List<Bill> getAllNonePaymentBillsForSubscriber(@PathVariable("phoneNumber") String phoneNumber) {
-        return bankService.getAllNonPaymentBillsForSubscriber(phoneNumber);
+
+    @GetMapping("/{phoneNumber}/{bankId}")
+    public List<Bill> getAllNonePaymentBillsForSubscriber(
+            @PathVariable("phoneNumber") String phoneNumber,
+            @PathVariable("bankId") String bankId) {
+        return bankService.getAllNonPaymentBillsForSubscriber(bankId, phoneNumber);
     }
 
     @GetMapping("/subscribers/details/{phoneNumber}")
@@ -48,8 +51,10 @@ public class BankController {
     }
 
     @PostMapping("subscribers/pay/{phoneNumber}")
-    public void payAllBillsBySubscriber(@PathVariable("phoneNumber") String phoneNumber) {
-        bankService.payAllBillsBySubscriber(phoneNumber);
+    public void payAllBillsBySubscriber(
+            @PathVariable("phoneNumber") String phoneNumber,
+            @PathVariable("bankId") String bankId) {
+        bankService.payAllBillsBySubscriber(bankId, phoneNumber);
     }
 
     @GetMapping("subscribers/service/{phoneNumber}")
@@ -61,13 +66,5 @@ public class BankController {
     public HashMap<Subscriber, Double> findTop10() {
         return bankService.findTop10();
     }
-
-//    @GetMapping("/getNone/{startDate}")
-//    public List<Bill> getNon( @PathVariable("startDate")
-//                                  @PathVariable("endDate")
-//                                  @PathVariable("phoneNumber")
-//            Date startDate, Date endDate, String phoneNumber){
-//        return bankService.getNon(startDate,endDate,phoneNumber);
-//    }
 
 }
