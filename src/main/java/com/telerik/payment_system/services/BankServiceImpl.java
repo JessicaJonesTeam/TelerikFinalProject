@@ -68,6 +68,7 @@ public class BankServiceImpl implements BankService {
         List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(phoneNumber);
         for (Bill bill : bills) {
             bill.setPaymentDate(new Date(System.currentTimeMillis()));
+            this.billRepository.saveAndFlush(bill);
         }
     }
 
@@ -95,6 +96,11 @@ public class BankServiceImpl implements BankService {
             }
         }
         return top10;
+    }
+
+    @Override
+    public List<Bill> getNon(Date startDate, Date endDate, String phoneNumber) {
+        return billRepository.getAllByStartDateAndEndDateAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(startDate,endDate,phoneNumber);
     }
 
 }

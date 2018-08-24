@@ -7,6 +7,7 @@ import com.telerik.payment_system.services.base.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class BankController {
         return bankService.maxAmount(phoneNumber);
     }
 
-    @GetMapping("subscribers/pay/{phoneNumber}")
+    @PostMapping("subscribers/pay/{phoneNumber}")
     public void payAllBillsBySubscriber(@PathVariable("phoneNumber") String phoneNumber) {
         bankService.payAllBillsBySubscriber(phoneNumber);
     }
@@ -60,5 +61,13 @@ public class BankController {
     public HashMap<Subscriber, Double> findTop10() {
         return bankService.findTop10();
     }
+
+//    @GetMapping("/getNone/{startDate}")
+//    public List<Bill> getNon( @PathVariable("startDate")
+//                                  @PathVariable("endDate")
+//                                  @PathVariable("phoneNumber")
+//            Date startDate, Date endDate, String phoneNumber){
+//        return bankService.getNon(startDate,endDate,phoneNumber);
+//    }
 
 }

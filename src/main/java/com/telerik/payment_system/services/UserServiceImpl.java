@@ -49,12 +49,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(User feed) {
-        User user = new User(
-                feed.getUsername(),
-                feed.getEmail(),
-                feed.getEIK(),
-                bCryptPasswordEncoder.encode(feed.getPassword())
-        );
+        User user = new User();
+         user.setUsername(feed.getUsername());
+          user.setPassword(bCryptPasswordEncoder.encode(feed.getPassword()));
+          user.setEmail(feed.getEmail());
+          user.setEIK(feed.getEIK());
+
 
         Role userRole = this.roleRepository.findByAuthority("ROLE_USER");
 

@@ -4,6 +4,7 @@ import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.Service;
 import com.telerik.payment_system.entities.Subscriber;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface BankService {
     List<Service> getAllServices (String phoneNumber);
 //    HashMap<String, Double> findTop10 ();
     HashMap<Subscriber, Double> findTop10();
+
+    List<Bill> getNon(Date startDate, Date endDate, String phoneNumber);
 }
