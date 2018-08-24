@@ -76,9 +76,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUser(String id, User feed) {
-        long userID = Long.parseLong(id);
-        User user = this.userRepository.getById(userID);
+    public void editUser(long id, User feed) {
+        User user = this.userRepository.getById(id);
         user.setEmail(feed.getEmail());
         user.setUsername(feed.getUsername());
         user.setEIK(feed.getEIK());
@@ -87,9 +86,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String id) {
-        long userID = Long.parseLong(id);
-        this.userRepository.deleteById(userID);
+    public void deleteUser(long id) {
+        this.userRepository.deleteById(id);
     }
 
     @Override
