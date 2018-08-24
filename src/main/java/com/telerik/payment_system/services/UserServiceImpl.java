@@ -8,6 +8,8 @@ import com.telerik.payment_system.repositories.RoleRepository;
 import com.telerik.payment_system.repositories.UserRepository;
 import com.telerik.payment_system.services.base.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -40,7 +43,7 @@ public class UserServiceImpl implements UserService {
         this.billRepository = billRepository;
     }
 
-    public User getByUsername(String username) {
+    public UserDetails getByUsername(String username) {
         return this.userRepository.findByUsername(username);
     }
 
@@ -97,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.userRepository.findByUsername(username);
+        UserDetails user = this.userRepository.findByUsername(username);
 
         if(user == null) {
             throw new UsernameNotFoundException("Username was not found.");

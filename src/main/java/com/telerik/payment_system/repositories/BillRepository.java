@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface BillRepository extends JpaRepository<Bill, Long> {
 
+
+
     //They must have access to bill payment module where they can pay a particular bill (or selected list of bills) for their subscribers
     //List<Bill> getAllBySubscriber_PhoneNumberAndPaymentDateIsNull(String phoneNumber);
     List<Bill> getAllBySubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(String phoneNumber);

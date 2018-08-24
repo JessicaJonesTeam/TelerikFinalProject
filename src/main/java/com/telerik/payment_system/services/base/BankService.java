@@ -10,6 +10,12 @@ import java.util.List;
 public interface BankService {
 
     List<Bill> getAllNonPaymentBillsForSubscriber(String phoneNumber);
+
+    /**
+     * bla
+     * @param phoneNumber
+     * @return
+     */
     Subscriber findByPhoneNumber(String phoneNumber);
     List<Bill> getHistoryBySubscriber(String phoneNumber);
     Double averageAmount (String phoneNumber);

@@ -17,14 +17,16 @@ public class AdminController {
     private final UserService userService;
 
     @Autowired
-    public AdminController( UserService userService) {
+    public AdminController(UserRepository userRepository, UserService userService) {
         this.userService = userService;
     }
 
 
     @GetMapping("/users")
     public List<User> listUsers() {
-        return userService.getAllUsers();
+        List<User> users = userService.getAllUsers();
+
+        return users;
     }
 
     @PostMapping("users/create")
@@ -36,14 +38,15 @@ public class AdminController {
     @PutMapping("users/update/{id}")
     public void updateUser(@PathVariable("id") String userId, @RequestBody User user) {
 //       TODO; handle if id doesnt exist
-
-        userService.editUser(userId, user);
+        long id = Long.parseLong(userId);
+        userService.editUser(id, user);
     }
 
     @DeleteMapping("users/delete/{id}")
     public void deleteUser(@PathVariable("id") String userId) {
         //       TODO; handle if id doesnt exist
-        userService.deleteUser(userId);
+        long id = Long.parseLong(userId);
+        userService.deleteUser(id);
     }
 
     @PostMapping("bills/create/")
