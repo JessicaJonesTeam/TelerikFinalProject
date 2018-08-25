@@ -2,10 +2,8 @@ package com.telerik.payment_system.ServiceTests;
 
 import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.Subscriber;
-import com.telerik.payment_system.repositories.BillRepository;
-import com.telerik.payment_system.repositories.SubscriberRepository;
+import com.telerik.payment_system.repositories.base.BillRepository;
 import com.telerik.payment_system.services.BankServiceImpl;
-import com.telerik.payment_system.services.base.BankService;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
