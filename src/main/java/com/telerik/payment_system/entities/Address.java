@@ -36,7 +36,7 @@ public class Address {
     }
 
     public int getAddressId() {
-        return id;
+        return this.id;
     }
 
     public void setAddressId(int id) {
@@ -44,7 +44,7 @@ public class Address {
     }
 
     public String getCountry() {
-        return country;
+        return this.country;
     }
 
     public void setCountry(String country) {
@@ -52,7 +52,7 @@ public class Address {
     }
 
     public String getCity() {
-        return city;
+        return this.city;
     }
 
     public void setCity(String city) {
@@ -60,7 +60,7 @@ public class Address {
     }
 
     public String getZipCode() {
-        return zipCode;
+        return this.zipCode;
     }
 
     public void setZipCode(String zipCode) {
@@ -68,7 +68,7 @@ public class Address {
     }
 
     public String getStreet() {
-        return street;
+        return this.street;
     }
 
     public void setStreet(String street) {

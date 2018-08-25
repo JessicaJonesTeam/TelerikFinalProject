@@ -2,7 +2,7 @@ package com.telerik.payment_system.config;
 
 import com.telerik.payment_system.JWT.JwtAuthenticationFilter;
 import com.telerik.payment_system.JWT.JwtAuthorizationFilter;
-import com.telerik.payment_system.services.base.UserService;
+import com.telerik.payment_system.services.base.AdminService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,12 +16,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private final UserService userService;
+    private final AdminService adminService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public WebSecurityConfiguration(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userService = userService;
+    public WebSecurityConfiguration(AdminService adminService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.adminService = adminService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -38,14 +38,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userService))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.adminService))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(this.userService)
+                .userDetailsService(this.adminService)
                 .passwordEncoder(this.bCryptPasswordEncoder);
     }
 

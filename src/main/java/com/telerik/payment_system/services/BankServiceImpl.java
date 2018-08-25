@@ -2,9 +2,9 @@ package com.telerik.payment_system.services;
 
 import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.Subscriber;
-import com.telerik.payment_system.repositories.BillRepository;
-import com.telerik.payment_system.repositories.ServiceRepository;
-import com.telerik.payment_system.repositories.SubscriberRepository;
+import com.telerik.payment_system.repositories.base.BillRepository;
+import com.telerik.payment_system.repositories.base.ServiceRepository;
+import com.telerik.payment_system.repositories.base.SubscriberRepository;
 import com.telerik.payment_system.services.base.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

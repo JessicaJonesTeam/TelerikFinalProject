@@ -1,6 +1,7 @@
 package com.telerik.payment_system.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class Role implements GrantedAuthority {
     private String authority;
 
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnore
     private List<User> users;
 
@@ -35,7 +36,7 @@ public class Role implements GrantedAuthority {
 
 
     public List<User> getUsers() {
-        return users;
+        return this.users;
     }
 
     public void setUsers(List<User> users) {
@@ -43,7 +44,7 @@ public class Role implements GrantedAuthority {
     }
 
     public long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(long id) {

@@ -50,7 +50,7 @@ public class Subscriber {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return this.phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
@@ -58,7 +58,7 @@ public class Subscriber {
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -66,7 +66,7 @@ public class Subscriber {
     }
 
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     public void setLastName(String lastName) {
@@ -74,7 +74,7 @@ public class Subscriber {
     }
 
     public String getEgn() {
-        return egn;
+        return this.egn;
     }
 
     public void setEgn(String egn) {
@@ -82,7 +82,7 @@ public class Subscriber {
     }
 
     public User getBank() {
-        return bank;
+        return this.bank;
     }
 
     public void setBank(User bank) {
@@ -90,7 +90,7 @@ public class Subscriber {
     }
 
     public List<Bill> getBills() {
-        return bills;
+        return this.bills;
     }
 
     public void setBills(List<Bill> bills) {
@@ -98,7 +98,7 @@ public class Subscriber {
     }
 
     public long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(long id) {

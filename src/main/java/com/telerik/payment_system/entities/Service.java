@@ -38,7 +38,7 @@ public class Service {
     }
 
     public long getServiceId() {
-        return id;
+        return this.id;
     }
 
     public void setServiceId(long serviceId) {
@@ -46,7 +46,7 @@ public class Service {
     }
 
     public String getService() {
-        return service;
+        return this.service;
     }
 
     public void setService(String service) {
@@ -54,7 +54,7 @@ public class Service {
     }
 
     public List<Bill> getBills() {
-        return bills;
+        return this.bills;
     }
 
     public void setBills(List<Bill> bills) {

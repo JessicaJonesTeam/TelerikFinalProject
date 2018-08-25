@@ -38,7 +38,7 @@ public class Currency {
     }
 
     public int getCurrencyId() {
-        return id;
+        return this.id;
     }
 
     public void setCurrencyId(int currencyId) {
@@ -46,7 +46,7 @@ public class Currency {
     }
 
     public String getCurrency() {
-        return currency;
+        return this.currency;
     }
 
     public void setCurrency(String currency) {
@@ -54,7 +54,7 @@ public class Currency {
     }
 
     public double getExchangeRate() {
-        return exchangeRate;
+        return this.exchangeRate;
     }
 
     public void setExchangeRate(double exchangeRate) {
@@ -62,7 +62,7 @@ public class Currency {
     }
 
     public List<Bill> getBills() {
-        return bills;
+        return this.bills;
     }
 
     public void setBills(List<Bill> bills) {

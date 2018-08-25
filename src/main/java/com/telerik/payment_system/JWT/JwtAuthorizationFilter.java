@@ -1,6 +1,6 @@
 package com.telerik.payment_system.JWT;
 
-import com.telerik.payment_system.services.base.UserService;
+import com.telerik.payment_system.services.base.AdminService;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
-    private final UserService userService;
+    private final AdminService adminService;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserService userService) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, AdminService adminService) {
         super(authenticationManager);
-        this.userService = userService;
+        this.adminService = adminService;
     }
 
 
@@ -54,7 +54,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             return new UsernamePasswordAuthenticationToken(
                     user,
                     null,
-                    this.userService.loadUserByUsername(user).getAuthorities()
+                    this.adminService.loadUserByUsername(user).getAuthorities()
             );
         }
 

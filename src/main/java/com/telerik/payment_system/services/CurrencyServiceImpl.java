@@ -1,7 +1,7 @@
 package com.telerik.payment_system.services;
 
 import com.telerik.payment_system.entities.Currency;
-import com.telerik.payment_system.repositories.CurrencyRepository;
+import com.telerik.payment_system.repositories.base.CurrencyRepository;
 import com.telerik.payment_system.services.base.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

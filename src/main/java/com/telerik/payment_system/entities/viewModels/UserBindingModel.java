@@ -19,12 +19,11 @@ public class UserBindingModel {
         this.username = username;
         this.password = password;
         this.email = email;
-
-        EIK = eik;
+        this.EIK = eik;
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {
@@ -32,7 +31,7 @@ public class UserBindingModel {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -48,7 +47,7 @@ public class UserBindingModel {
     }
 
     public String getEIK() {
-        return EIK;
+        return this.EIK;
     }
 
     public void setEIK(String EIK) {

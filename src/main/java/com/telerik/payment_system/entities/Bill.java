@@ -56,7 +56,7 @@ public class Bill {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -64,7 +64,7 @@ public class Bill {
     }
 
     public Service getService() {
-        return service;
+        return this.service;
     }
 
     public void setService(Service service) {
@@ -72,7 +72,7 @@ public class Bill {
     }
 
     public Subscriber getSubscriber() {
-        return subscriber;
+        return this.subscriber;
     }
 
     public void setSubscriber(Subscriber subscriber) {
@@ -80,7 +80,7 @@ public class Bill {
     }
 
     public Date getStartDate() {
-        return startDate;
+        return this.startDate;
     }
 
     public void setStartDate(Date startDate) {
@@ -88,7 +88,7 @@ public class Bill {
     }
 
     public Date getEndDate() {
-        return endDate;
+        return this.endDate;
     }
 
     public void setEndDate(Date endDate) {
@@ -96,7 +96,7 @@ public class Bill {
     }
 
     public double getAmount() {
-        return amount;
+        return this.amount;
     }
 
     public void setAmount(double amount) {
@@ -104,7 +104,7 @@ public class Bill {
     }
 
     public Currency getCurrency() {
-        return currency;
+        return this.currency;
     }
 
     public void setCurrency(Currency currency) {
@@ -112,7 +112,7 @@ public class Bill {
     }
 
     public Date getPaymentDate() {
-        return paymentDate;
+        return this.paymentDate;
     }
 
     public void setPaymentDate(Date paymentDate) {

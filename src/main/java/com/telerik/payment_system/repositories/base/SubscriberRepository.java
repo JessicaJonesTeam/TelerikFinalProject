@@ -1,4 +1,4 @@
-package com.telerik.payment_system.repositories;
+package com.telerik.payment_system.repositories.base;
 
 import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.Subscriber;

@@ -32,15 +32,15 @@ public class User implements UserDetails{
     private String email;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private List<Role> roles;
 
 
     public User() {
-        this.roles = new HashSet<>();
+        this.roles = new ArrayList<>();
     }
 
     public User(String username, String password, String EIK, String email) {
@@ -48,7 +48,7 @@ public class User implements UserDetails{
         this.password = password;
         this.EIK = EIK;
         this.email = email;
-        this.roles = new HashSet<>();
+        this.roles = new ArrayList<>();
     }
 
     public long getId() {
@@ -83,23 +83,23 @@ public class User implements UserDetails{
 
 
     public String getEIK() {
-        return EIK;
+        return this.EIK;
     }
 
     public void setEIK(String EIK) {
         this.EIK = EIK;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public List<Role> getRoles() {
+        return this.roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {

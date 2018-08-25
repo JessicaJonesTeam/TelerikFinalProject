@@ -3,13 +3,11 @@ package com.telerik.payment_system.services;
 import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.Role;
 import com.telerik.payment_system.entities.User;
-import com.telerik.payment_system.repositories.BillRepository;
-import com.telerik.payment_system.repositories.RoleRepository;
-import com.telerik.payment_system.repositories.UserRepository;
-import com.telerik.payment_system.services.base.UserService;
+import com.telerik.payment_system.repositories.base.BillRepository;
+import com.telerik.payment_system.repositories.base.RoleRepository;
+import com.telerik.payment_system.repositories.base.UserRepository;
+import com.telerik.payment_system.services.base.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,14 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
 
     private final RoleRepository roleRepository;
@@ -35,8 +30,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
-                           BCryptPasswordEncoder bCryptPasswordEncoder, BillRepository billRepository) {
+    public AdminServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
+                            BCryptPasswordEncoder bCryptPasswordEncoder, BillRepository billRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -48,25 +43,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(User feed) {
-        User user = new User();
-         user.setUsername(feed.getUsername());
-          user.setPassword(bCryptPasswordEncoder.encode(feed.getPassword()));
-          user.setEmail(feed.getEmail());
-          user.setEIK(feed.getEIK());
+    public void createUser(User user) {
 
-
-        Role userRole = this.roleRepository.findByAuthority("ROLE_USER");
-
-        user.getRoles().add(userRole);
-
+          user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         this.userRepository.saveAndFlush(user);
-        this.roleRepository.saveAndFlush(userRole);
+
     }
 
     @Override
     public List<User> getAllUsers() {
-
         return this.userRepository.findAll();
     }
 
