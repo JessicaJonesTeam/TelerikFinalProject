@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -45,7 +46,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void createUser(User user) {
 
-          user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        List<Role> roles = new ArrayList<>();
+        System.out.println(roleRepository.findByAuthority(user.getRoles().get(0).getAuthority()));
+        roles.add(roleRepository.findByAuthority(user.getRoles().get(0).getAuthority()));
+        user.setRoles(roles);
         this.userRepository.saveAndFlush(user);
 
     }
@@ -68,6 +73,7 @@ public class AdminServiceImpl implements AdminService {
         user.setEIK(feed.getEIK());
 
         this.userRepository.saveAndFlush(user);
+
     }
 
     @Override
@@ -85,7 +91,7 @@ public class AdminServiceImpl implements AdminService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetails user = this.userRepository.findByUsername(username);
 
-        if(user == null) {
+        if (user == null) {
             throw new UsernameNotFoundException("Username was not found.");
         }
 

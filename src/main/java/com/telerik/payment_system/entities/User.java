@@ -18,7 +18,7 @@ public class User implements UserDetails{
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private long id;
 
-    @Column
+    @Column()
     private String username;
 
     @Column
@@ -31,11 +31,10 @@ public class User implements UserDetails{
     @Column
     private String email;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name="users_roles",
+            joinColumns=@JoinColumn(name="user_id"),
+            inverseJoinColumns=@JoinColumn(name="role_id"))
     private List<Role> roles;
 
 
@@ -60,7 +59,6 @@ public class User implements UserDetails{
     }
 
     @Override
-    @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles;
     }
@@ -107,25 +105,21 @@ public class User implements UserDetails{
     }
 
     @Override
-    @Transient
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
-    @Transient
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
-    @Transient
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
-    @Transient
     public boolean isEnabled() {
         return true;
     }

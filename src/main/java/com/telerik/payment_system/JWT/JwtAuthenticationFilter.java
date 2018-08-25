@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.Date;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private static final int EXPIRATION_DURATION = 1200000;
 
     private final AuthenticationManager authenticationManager;
 
@@ -52,12 +51,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             Authentication authResult) throws IOException, ServletException {
         String token = Jwts.builder()
                 .setSubject(((User) authResult.getPrincipal()).getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_DURATION))
+                .setExpiration(new Date(System.currentTimeMillis() + JwtSecurityConstants.EXPIRATION_DURATION))
                 .signWith(SignatureAlgorithm.HS256, JwtSecurityConstants.SECRET.getBytes())
                 .compact();
 
-        response.getWriter().append("{\"Authorization\": \"Bearer " + token + "\"}");
+//        response.getWriter().append("{\"Authorization\": \"Bearer " + token + "\"}");
         response.setContentType("application/json");
-//        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader("Authorization", "Bearer " + token);
     }
 }
