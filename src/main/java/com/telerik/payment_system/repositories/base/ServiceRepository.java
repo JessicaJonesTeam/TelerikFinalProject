@@ -2,11 +2,12 @@ package com.telerik.payment_system.repositories.base;
 
 import com.telerik.payment_system.entities.Service;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.telerik.payment_system.entities.Bill;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
+@Repository
 public interface ServiceRepository extends JpaRepository<Service, Long> {
+
+    Service getByServiceName(String name);
 //•	A client should be able to see a list of the services the client has paid for
 
 

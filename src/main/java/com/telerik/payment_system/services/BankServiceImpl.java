@@ -8,6 +8,7 @@ import com.telerik.payment_system.repositories.base.SubscriberRepository;
 import com.telerik.payment_system.services.base.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.sql.Date;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
+@Transactional
 public class BankServiceImpl implements BankService {
 
     private final BillRepository billRepository;

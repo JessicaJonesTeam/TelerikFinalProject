@@ -3,10 +3,11 @@ package com.telerik.payment_system.repositories.base;
 import com.telerik.payment_system.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Repository;
 
-
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    UserDetails findByUsername(String username);
+    UserDetails getByUsername(String username);
 
     User getById(Long id);
 

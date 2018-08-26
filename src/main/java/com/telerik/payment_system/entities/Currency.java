@@ -18,7 +18,7 @@ public class Currency {
     private int id;
 
     @Column
-    private String currency;
+    private String currencyName;
 
     @Column
     private double exchangeRate;
@@ -32,7 +32,7 @@ public class Currency {
     }
 
     public Currency(String currency, double exchangeRate, List<Bill> bills) {
-        this.currency = currency;
+        this.currencyName = currency;
         this.exchangeRate = exchangeRate;
         this.bills = bills;
     }
@@ -45,12 +45,12 @@ public class Currency {
         this.id = currencyId;
     }
 
-    public String getCurrency() {
-        return this.currency;
+    public String getCurrencyName() {
+        return this.currencyName;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setCurrency(String currencyName) {
+        this.currencyName = currencyName;
     }
 
     public double getExchangeRate() {

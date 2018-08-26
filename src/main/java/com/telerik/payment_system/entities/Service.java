@@ -18,7 +18,7 @@ public class Service {
     private long id;
 
     @Column
-    private String service;
+    private String serviceName;
 
     @OneToMany(mappedBy = "service", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
@@ -29,12 +29,12 @@ public class Service {
     }
 
     public Service(String service, List<Bill> bills) {
-        this.service = service;
+        this.serviceName = service;
         this.bills = bills;
     }
 
     public Service(String service) {
-        this.service = service;
+        this.serviceName = service;
     }
 
     public long getServiceId() {
@@ -45,12 +45,12 @@ public class Service {
         this.id = serviceId;
     }
 
-    public String getService() {
-        return this.service;
+    public String getServiceName() {
+        return this.serviceName;
     }
 
-    public void setService(String service) {
-        this.service = service;
+    public void setServiceName(String service) {
+        this.serviceName = service;
     }
 
     public List<Bill> getBills() {

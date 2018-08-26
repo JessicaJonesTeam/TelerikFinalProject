@@ -3,9 +3,7 @@ package com.telerik.payment_system.services;
 import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.Role;
 import com.telerik.payment_system.entities.User;
-import com.telerik.payment_system.repositories.base.BillRepository;
-import com.telerik.payment_system.repositories.base.RoleRepository;
-import com.telerik.payment_system.repositories.base.UserRepository;
+import com.telerik.payment_system.repositories.base.*;
 import com.telerik.payment_system.services.base.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,22 +23,26 @@ public class AdminServiceImpl implements AdminService {
 
     private final RoleRepository roleRepository;
 
+    private final SubscriberRepository subscriberRepository;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private final BillRepository billRepository;
 
+    private final ServiceRepository serviceRepository;
+
+    private final CurrencyRepository currencyRepository;
 
     @Autowired
-    public AdminServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
-                            BCryptPasswordEncoder bCryptPasswordEncoder, BillRepository billRepository) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.billRepository = billRepository;
-    }
+    public AdminServiceImpl(UserRepository userRepository1, RoleRepository roleRepository1, SubscriberRepository subscriberRepository1, BCryptPasswordEncoder bCryptPasswordEncoder1, BillRepository billRepository1, ServiceRepository serviceRepository, CurrencyRepository currencyRepository) {
+        this.userRepository = userRepository1;
 
-    public UserDetails getByUsername(String username) {
-        return this.userRepository.findByUsername(username);
+        this.roleRepository = roleRepository1;
+        this.subscriberRepository = subscriberRepository1;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder1;
+        this.billRepository = billRepository1;
+        this.serviceRepository = serviceRepository;
+        this.currencyRepository = currencyRepository;
     }
 
     @Override
@@ -83,13 +85,19 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void createPayment(Bill billFeed) {
+        String phone = billFeed.getSubscriber().getPhoneNumber();
+        billFeed.setSubscriber(subscriberRepository.getByPhoneNumber(phone));
+        String serviceName = billFeed.getService().getServiceName();
+        billFeed.setService(serviceRepository.getByServiceName(serviceName));
+        String currencyName = billFeed.getCurrency().getCurrencyName();
+        billFeed.setCurrency(currencyRepository.getByCurrencyName(currencyName));
         this.billRepository.saveAndFlush(billFeed);
     }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDetails user = this.userRepository.findByUsername(username);
+        UserDetails user = this.userRepository.getByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("Username was not found.");

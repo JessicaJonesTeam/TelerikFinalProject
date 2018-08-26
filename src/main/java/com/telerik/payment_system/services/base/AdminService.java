@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.List;
 
 public interface AdminService extends UserDetailsService {
-    UserDetails getByUsername(String username);
 
     List<User> getAllUsers();
 
