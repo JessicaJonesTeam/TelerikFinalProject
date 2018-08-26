@@ -7,7 +7,7 @@ import com.telerik.payment_system.services.base.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,48 +23,48 @@ public class BankController {
     }
 
 
-    @GetMapping("/{phoneNumber}/{bankId}")
+    @GetMapping("/{phoneNumber}")
     public List<Bill> getAllNonePaymentBillsForSubscriber(
             @PathVariable("phoneNumber") String phoneNumber,
-            @PathVariable("bankId") String bankId) {
-        return bankService.getAllNonPaymentBillsForSubscriber(bankId, phoneNumber);
+            HttpServletRequest request) {
+        return bankService.getAllNonPaymentBillsForSubscriber( phoneNumber,request);
     }
 
     @GetMapping("/subscribers/details/{phoneNumber}")
-    public Subscriber getSubscriberDetails(@PathVariable("phoneNumber") String phoneNumber) {
-        return bankService.findByPhoneNumber(phoneNumber);
+    public Subscriber getSubscriberDetails(@PathVariable("phoneNumber") String phoneNumber,HttpServletRequest request) {
+        return bankService.findByPhoneNumber(phoneNumber,request);
     }
 
     @GetMapping("/subscribers/history/{phoneNumber}")
-    public List<Bill> getHistoryBySubscriber(@PathVariable("phoneNumber") String phoneNumber) {
-        return bankService.getHistoryBySubscriber(phoneNumber);
+    public List<Bill> getHistoryBySubscriber(@PathVariable("phoneNumber") String phoneNumber,HttpServletRequest request) {
+        return bankService.getHistoryBySubscriber(phoneNumber,request);
     }
 
     @GetMapping("/subscribers/average/{phoneNumber}")
-    public Double averageAmount(@PathVariable("phoneNumber") String phoneNumber) {
-        return bankService.averageAmount(phoneNumber);
+    public Double averageAmount(@PathVariable("phoneNumber") String phoneNumber,HttpServletRequest request) {
+        return bankService.averageAmount(phoneNumber,request);
     }
 
     @GetMapping("/subscribers/max/{phoneNumber}")
-    public Double maxAmount(@PathVariable("phoneNumber") String phoneNumber) {
-        return bankService.maxAmount(phoneNumber);
+    public Double maxAmount(@PathVariable("phoneNumber") String phoneNumber,HttpServletRequest request) {
+        return bankService.maxAmount(phoneNumber,request);
     }
 
     @PostMapping("subscribers/pay/{phoneNumber}")
     public void payAllBillsBySubscriber(
             @PathVariable("phoneNumber") String phoneNumber,
-            @PathVariable("bankId") String bankId) {
-        bankService.payAllBillsBySubscriber(bankId, phoneNumber);
+            HttpServletRequest request) {
+        bankService.payAllBillsBySubscriber( phoneNumber,request);
     }
 
     @GetMapping("subscribers/service/{phoneNumber}")
-    public List<Service> getAllServices(@PathVariable("phoneNumber") String phoneNumber) {
-        return bankService.getAllServices(phoneNumber);
+    public List<Service> getAllServices(@PathVariable("phoneNumber") String phoneNumber,HttpServletRequest request) {
+        return bankService.getAllServices(phoneNumber,request);
     }
 
     @GetMapping("subscribers/top10")
-    public HashMap<Subscriber, Double> findTop10() {
-        return bankService.findTop10();
+    public HashMap<Subscriber, Double> findTop10(HttpServletRequest request) {
+        return bankService.findTop10(request);
     }
 
 }

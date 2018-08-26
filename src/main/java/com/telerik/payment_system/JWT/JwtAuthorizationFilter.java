@@ -1,5 +1,6 @@
 package com.telerik.payment_system.JWT;
 
+import com.telerik.payment_system.constants.Constants;
 import com.telerik.payment_system.services.base.AdminService;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,7 +46,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         String header = request.getHeader("Authorization");
 
         String user = Jwts.parser()
-                .setSigningKey(JwtSecurityConstants.SECRET.getBytes())
+                .setSigningKey(Constants.SECRET.getBytes())
                 .parseClaimsJws(header.replace("Bearer ", ""))
                 .getBody()
                 .getSubject();

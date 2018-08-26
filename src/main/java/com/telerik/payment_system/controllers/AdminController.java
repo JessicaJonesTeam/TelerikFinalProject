@@ -2,6 +2,7 @@ package com.telerik.payment_system.controllers;
 
 import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.User;
+import com.telerik.payment_system.models.viewModels.UserViewModel;
 import com.telerik.payment_system.repositories.base.UserRepository;
 import com.telerik.payment_system.services.base.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class AdminController {
 
 
     @GetMapping("/users")
-    public List<User> listUsers() {
-        List<User> users = adminService.getAllUsers();
+    public List<UserViewModel> listUsers() {
+        List<UserViewModel> users = adminService.getAllUsers();
 
         return users;
     }

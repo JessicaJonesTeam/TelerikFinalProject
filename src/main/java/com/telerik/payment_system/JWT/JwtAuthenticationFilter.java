@@ -1,6 +1,7 @@
 package com.telerik.payment_system.JWT;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.telerik.payment_system.constants.Constants;
 import com.telerik.payment_system.entities.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -51,8 +52,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             Authentication authResult) throws IOException, ServletException {
         String token = Jwts.builder()
                 .setSubject(((User) authResult.getPrincipal()).getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + JwtSecurityConstants.EXPIRATION_DURATION))
-                .signWith(SignatureAlgorithm.HS256, JwtSecurityConstants.SECRET.getBytes())
+                .setExpiration(new Date(System.currentTimeMillis() + Constants.EXPIRATION_DURATION))
+                .signWith(SignatureAlgorithm.HS256, Constants.SECRET.getBytes())
                 .compact();
 
 //        response.getWriter().append("{\"Authorization\": \"Bearer " + token + "\"}");

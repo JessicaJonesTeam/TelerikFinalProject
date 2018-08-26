@@ -3,8 +3,10 @@ package com.telerik.payment_system.services;
 import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.Role;
 import com.telerik.payment_system.entities.User;
+import com.telerik.payment_system.models.viewModels.UserViewModel;
 import com.telerik.payment_system.repositories.base.*;
 import com.telerik.payment_system.services.base.AdminService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -33,8 +36,10 @@ public class AdminServiceImpl implements AdminService {
 
     private final CurrencyRepository currencyRepository;
 
+    private final ModelMapper modelMapper;
+
     @Autowired
-    public AdminServiceImpl(UserRepository userRepository1, RoleRepository roleRepository1, SubscriberRepository subscriberRepository1, BCryptPasswordEncoder bCryptPasswordEncoder1, BillRepository billRepository1, ServiceRepository serviceRepository, CurrencyRepository currencyRepository) {
+    public AdminServiceImpl(UserRepository userRepository1, RoleRepository roleRepository1, SubscriberRepository subscriberRepository1, BCryptPasswordEncoder bCryptPasswordEncoder1, BillRepository billRepository1, ServiceRepository serviceRepository, CurrencyRepository currencyRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository1;
 
         this.roleRepository = roleRepository1;
@@ -43,6 +48,7 @@ public class AdminServiceImpl implements AdminService {
         this.billRepository = billRepository1;
         this.serviceRepository = serviceRepository;
         this.currencyRepository = currencyRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -58,13 +64,14 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return this.userRepository.findAll();
-    }
+    public List<UserViewModel> getAllUsers() {
+        List<UserViewModel>usersView = new ArrayList<>();
+        List<User> users =this.userRepository.findAll();
 
-    @Override
-    public User getUserById(Long id) {
-        return this.userRepository.getById(id);
+        return usersView=users.stream()
+                .map(x->modelMapper.map(x,UserViewModel.class))
+                .collect(Collectors.toList());
+
     }
 
     @Override
