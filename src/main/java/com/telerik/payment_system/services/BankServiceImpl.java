@@ -1,19 +1,17 @@
 package com.telerik.payment_system.services;
 
-import com.telerik.payment_system.Utilities.JwtParser;
 import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.Subscriber;
-import com.telerik.payment_system.entities.User;
+import com.telerik.payment_system.models.viewModels.SubscriberViewModel;
 import com.telerik.payment_system.repositories.base.BillRepository;
 import com.telerik.payment_system.repositories.base.SubscriberRepository;
-import com.telerik.payment_system.repositories.base.UserRepository;
 import com.telerik.payment_system.services.base.BankService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,52 +25,41 @@ public class BankServiceImpl implements BankService {
 
     private final SubscriberRepository subscriberRepository;
 
-    private final JwtParser jwtParser;
-
-    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public BankServiceImpl(BillRepository billRepository,
                            SubscriberRepository subscriberRepository,
-                           JwtParser jwtParser,
-                           UserRepository userRepository) {
+                           ModelMapper modelMapper) {
         this.billRepository = billRepository;
         this.subscriberRepository = subscriberRepository;
-        this.jwtParser = jwtParser;
-        this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<Bill> getAllNonPaymentBillsForSubscriber(String phoneNumber, HttpServletRequest request) {
-        //TODO: filter by bankId
-        User bank = (User) this.userRepository.getByUsername(this.jwtParser.getUsernameFromToken(request));
-        long id = bank.getId();
-        return billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(id, phoneNumber);
+    public List<Bill> getAllNonPaymentBillsForSubscriber(long bankId,String phoneNumber) {
+//         CHECKED: working
+
+        return billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(bankId, phoneNumber);
     }
 
     @Override
-    public Subscriber findByPhoneNumber(String phoneNumber, HttpServletRequest request) {
-        //TODO: filter by bankId
-        User bank = (User) this.userRepository.getByUsername(this.jwtParser.getUsernameFromToken(request));
-        long id = bank.getId();
+    public SubscriberViewModel findByPhoneNumber(long bankId,String phoneNumber) {
+//         CHECKED: working
 
-        return subscriberRepository.getByPhoneNumber(phoneNumber);
+        return this.modelMapper.map(subscriberRepository.getByBank_IdAndPhoneNumber(bankId,phoneNumber),SubscriberViewModel.class);
     }
 
     @Override
-    public List<Bill> getHistoryBySubscriber(String phoneNumber, HttpServletRequest request) {
+    public List<Bill> getHistoryBySubscriber(String phoneNumber,long bankId) {
         //TODO: filter by bankId
-        User bank = (User) this.userRepository.getByUsername(this.jwtParser.getUsernameFromToken(request));
-        long id = bank.getId();
 
         return billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(phoneNumber);
     }
 
     @Override
-    public Double averageAmount(String phoneNumber, HttpServletRequest request) {
+    public Double averageAmount(String phoneNumber,long bankId) {
         //TODO: filter by bankId
-        User bank = (User) this.userRepository.getByUsername(this.jwtParser.getUsernameFromToken(request));
-        long id = bank.getId();
 
         List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(phoneNumber);
         double sum = 0;
@@ -83,10 +70,8 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Double maxAmount(String phoneNumber, HttpServletRequest request) {
+    public Double maxAmount(String phoneNumber,long bankId) {
         //TODO: filter by bankId
-        User bank = (User) this.userRepository.getByUsername(this.jwtParser.getUsernameFromToken(request));
-        long id = bank.getId();
 
         List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(phoneNumber);
         double max = 0;
@@ -97,12 +82,11 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public void payAllBillsBySubscriber(String phoneNumber, HttpServletRequest request) {
+    public void payAllBillsBySubscriber(String phoneNumber,long bankId) {
         //TODO: filter by bankId
-        User bank = (User) this.userRepository.getByUsername(this.jwtParser.getUsernameFromToken(request));
-        long id = bank.getId();
 
-        List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(id, phoneNumber);
+
+        List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(bankId, phoneNumber);
         for (Bill bill : bills) {
             bill.setPaymentDate(new Date(System.currentTimeMillis()));
             this.billRepository.saveAndFlush(bill);
@@ -110,10 +94,8 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public List<com.telerik.payment_system.entities.Service> getAllServices(String phoneNumber, HttpServletRequest request) {
+    public List<com.telerik.payment_system.entities.Service> getAllServices(String phoneNumber,long bankId) {
         //TODO: filter by bankId
-        User bank = (User) this.userRepository.getByUsername(this.jwtParser.getUsernameFromToken(request));
-        long id = bank.getId();
 
         List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(phoneNumber);
         List<com.telerik.payment_system.entities.Service> services = new ArrayList<>();
@@ -124,10 +106,8 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public HashMap<Subscriber, Double> findTop10(HttpServletRequest request) {
+    public HashMap<Subscriber, Double> findTop10(long bankId) {
         //TODO: filter by bankId
-        User bank = (User) this.userRepository.getByUsername(this.jwtParser.getUsernameFromToken(request));
-        long id = bank.getId();
 
         HashMap<Subscriber, Double> top10 = new HashMap<>();
         List<Bill> bills = billRepository.findAll();
