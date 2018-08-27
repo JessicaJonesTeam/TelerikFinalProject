@@ -52,16 +52,14 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public List<Bill> getHistoryBySubscriber(String phoneNumber,long bankId) {
-        //TODO: filter by bankId
 
-        return billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(phoneNumber);
+        return billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId, phoneNumber);
     }
 
     @Override
     public Double averageAmount(String phoneNumber,long bankId) {
-        //TODO: filter by bankId
 
-        List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(phoneNumber);
+        List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId, phoneNumber);
         double sum = 0;
         for (Bill bill : bills) {
             sum += bill.getAmount();
@@ -71,9 +69,8 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public Double maxAmount(String phoneNumber,long bankId) {
-        //TODO: filter by bankId
 
-        List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(phoneNumber);
+        List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId,phoneNumber);
         double max = 0;
         for (Bill bill : bills) {
             max = Math.max(max, bill.getAmount());
@@ -83,8 +80,6 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void payAllBillsBySubscriber(String phoneNumber,long bankId) {
-        //TODO: filter by bankId
-
 
         List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(bankId, phoneNumber);
         for (Bill bill : bills) {
@@ -97,7 +92,7 @@ public class BankServiceImpl implements BankService {
     public List<com.telerik.payment_system.entities.Service> getAllServices(String phoneNumber,long bankId) {
         //TODO: filter by bankId
 
-        List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(phoneNumber);
+        List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId, phoneNumber);
         List<com.telerik.payment_system.entities.Service> services = new ArrayList<>();
         for (Bill bill : bills) {
             services.add(bill.getService());
@@ -110,7 +105,7 @@ public class BankServiceImpl implements BankService {
         //TODO: filter by bankId
 
         HashMap<Subscriber, Double> top10 = new HashMap<>();
-        List<Bill> bills = billRepository.findAll();
+        List<Bill> bills = billRepository.getAllBySubscriber_Bank_Id(bankId);
         for (Bill bill : bills) {
             if (!top10.containsKey(bill.getSubscriber())) {
                 top10.put(bill.getSubscriber(), bill.getAmount());
@@ -121,6 +116,7 @@ public class BankServiceImpl implements BankService {
         }
         return top10;
     }
+
 
 
 }
