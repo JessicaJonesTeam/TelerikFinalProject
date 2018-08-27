@@ -33,9 +33,9 @@ public class BankServiceTest {
         when(mockBillRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(
                 (long) 1, "0123456789")).thenReturn(bills);
 
-//        List<Bill> result = mockBankService.getAllNonPaymentBillsForSubscriber("1", "0123456789");
+        List<Bill> result = mockBankService.getAllNonPaymentBillsForSubscriber(1L, "0123456789");
 
-//        Assert.assertEquals(1, result.size());
+        Assert.assertEquals(1, result.size());
     }
 
 }

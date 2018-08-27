@@ -30,6 +30,13 @@ public class BankController {
         this.userRepository = userRepository;
     }
 
+    @GetMapping("/")
+    public List<Bill> getAllNonPaymentBill(HttpServletRequest request) {
+        String username = this.jwtParser.getUsernameFromToken(request);
+        User user = (User)this.userRepository.getByUsername(username);
+        long bankId = user.getId();
+        return bankService.getAllNonPaymentBill(bankId);
+    }
 
     @GetMapping("/{phoneNumber}")
     public List<Bill> getAllNonePaymentBillsForSubscriber(
@@ -58,12 +65,15 @@ public class BankController {
         return bankService.getHistoryBySubscriber(phoneNumber,bankId);
     }
 
-    @GetMapping("/subscribers/average/{phoneNumber}")
-    public Double averageAmount(@PathVariable("phoneNumber") String phoneNumber,HttpServletRequest request) {
+    @GetMapping("/subscribers/average/{phoneNumber}/{timeInterval}")
+    public Double averageAmount(
+            @PathVariable("phoneNumber") String phoneNumber,
+            @PathVariable("timeInterval") List<String> timeInterval,
+            HttpServletRequest request) {
         String username = this.jwtParser.getUsernameFromToken(request);
         User user =(User)this.userRepository.getByUsername(username);
         long bankId = user.getId();
-        return bankService.averageAmount(phoneNumber,bankId);
+        return bankService.averageAmount(timeInterval, phoneNumber, bankId);
     }
 
     @GetMapping("/subscribers/max/{phoneNumber}")
@@ -82,6 +92,19 @@ public class BankController {
         User user =(User)this.userRepository.getByUsername(username);
         long bankId = user.getId();
         bankService.payAllBillsBySubscriber( phoneNumber,bankId);
+    }
+
+    @PostMapping("subscribers/pay/{phoneNumber}/{billId}")
+    public void payAllBillsById(
+            @PathVariable("phoneNumber") String phoneNumber,
+            @PathVariable("billId") int billId,
+            HttpServletRequest request){
+
+        String username = this.jwtParser.getUsernameFromToken(request);
+        User user = (User) this.userRepository.getByUsername(username);
+        long bankId = user.getId();
+
+        bankService.payAllBillsById(billId,bankId,phoneNumber);
     }
 
     @GetMapping("subscribers/service/{phoneNumber}")

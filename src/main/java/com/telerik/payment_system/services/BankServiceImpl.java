@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +39,11 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
+    public List<Bill> getAllNonPaymentBill(long bankId) {
+        return billRepository.getAllBySubscriber_Bank_IdAndPaymentDateIsNullOrderByAmount(bankId);
+    }
+
+    @Override
     public List<Bill> getAllNonPaymentBillsForSubscriber(long bankId,String phoneNumber) {
 //         CHECKED: working
 
@@ -57,9 +64,17 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Double averageAmount(String phoneNumber,long bankId) {
+    public Double averageAmount(List<String> timeInterval, String phoneNumber, long bankId) {
 
-        List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId, phoneNumber);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = null, endDate = null;
+        try {
+            startDate = new Date(format.parse(timeInterval.get(0)).getTime());
+            endDate = new Date(format.parse(timeInterval.get(1)).getTime());
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        }
+        List<Bill> bills = billRepository.getByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(startDate,endDate,bankId,phoneNumber);
         double sum = 0;
         for (Bill bill : bills) {
             sum += bill.getAmount();
@@ -89,6 +104,13 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
+    public void payAllBillsById(int billId, long bankId, String phoneNumber) {
+        Bill bill = billRepository.getByIdAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(billId,bankId,phoneNumber);
+        bill.setPaymentDate(new Date(System.currentTimeMillis()));
+        this.billRepository.saveAndFlush(bill);
+    }
+
+    @Override
     public List<com.telerik.payment_system.entities.Service> getAllServices(String phoneNumber,long bankId) {
         //TODO: filter by bankId
 
@@ -102,7 +124,6 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public HashMap<Subscriber, Double> findTop10(long bankId) {
-        //TODO: filter by bankId
 
         HashMap<Subscriber, Double> top10 = new HashMap<>();
         List<Bill> bills = billRepository.getAllBySubscriber_Bank_Id(bankId);
