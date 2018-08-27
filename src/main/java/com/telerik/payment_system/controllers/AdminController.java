@@ -8,7 +8,6 @@ import com.telerik.payment_system.services.base.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @RestController
@@ -17,28 +16,30 @@ import java.util.List;
 public class AdminController {
 
     private final AdminService adminService;
+
     private final UserRepository userRepository;
 
     @Autowired
     public AdminController(UserRepository userRepository, AdminService adminService) {
         this.adminService = adminService;
-        this.userRepository= userRepository;
+        this.userRepository = userRepository;
     }
 
 
     @GetMapping("/users")
     public List<UserViewModel> listUsers() {
-        List<UserViewModel> users = adminService.getAllUsers();
+        return adminService.getAllUsers();
 
-        return users;
+
     }
-//FOR TESTS ONLY
+
+    //FOR TESTS ONLY
     @GetMapping("/users/{id}")
     public User getUser(@PathVariable("id") String id) {
         long userId = Long.parseLong(id);
-        User user = userRepository.getById(userId);
+        return this.userRepository.getById(userId);
 
-        return user;
+
     }
 
     @PostMapping("users/create")

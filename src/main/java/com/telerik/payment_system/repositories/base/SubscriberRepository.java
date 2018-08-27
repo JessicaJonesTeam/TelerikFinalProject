@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface SubscriberRepository extends JpaRepository<Subscriber, Long> {
     //    The client must be able to see personal details of a subscriber
     Subscriber getByPhoneNumber(String phoneNumber);
+    Subscriber getByBank_IdAndPhoneNumber(Long bankId, String phoneNumber);
 
 }
 

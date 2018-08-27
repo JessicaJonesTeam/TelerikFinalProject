@@ -65,11 +65,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<UserViewModel> getAllUsers() {
-        List<UserViewModel>usersView = new ArrayList<>();
-        List<User> users =this.userRepository.findAll();
+        List<UserViewModel> usersView = new ArrayList<>();
+        List<User> users = this.userRepository.findAll();
 
-        return usersView=users.stream()
-                .map(x->modelMapper.map(x,UserViewModel.class))
+        return usersView = users.stream()
+                .map(x -> modelMapper.map(x, UserViewModel.class))
                 .collect(Collectors.toList());
 
     }
