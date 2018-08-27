@@ -76,12 +76,14 @@ public class BankController {
         return bankService.averageAmount(timeInterval, phoneNumber, bankId);
     }
 
-    @GetMapping("/subscribers/max/{phoneNumber}")
-    public Double maxAmount(@PathVariable("phoneNumber") String phoneNumber,HttpServletRequest request) {
+    @GetMapping("/subscribers/max/{phoneNumber}/{timeInterval}")
+    public Double maxAmount(@PathVariable("phoneNumber") String phoneNumber,
+                            @PathVariable("timeInterval") List<String> timeInterval,
+                            HttpServletRequest request) {
         String username = this.jwtParser.getUsernameFromToken(request);
         User user =(User)this.userRepository.getByUsername(username);
         long bankId = user.getId();
-        return bankService.maxAmount(phoneNumber,bankId);
+        return bankService.maxAmount(timeInterval,phoneNumber,bankId);
     }
 
     @PostMapping("subscribers/pay/{phoneNumber}")

@@ -16,7 +16,7 @@ public interface BankService {
     SubscriberViewModel findByPhoneNumber(long bankId,String phoneNumber);
     List<Bill> getHistoryBySubscriber(String phoneNumber,long bankId);
     Double averageAmount (List <String> timeInterval, String phoneNumber, long bankId);
-    Double maxAmount (String phoneNumber,long bankId);
+    Double maxAmount (List <String> timeInterval, String phoneNumber, long bankId);
     void payAllBillsBySubscriber(String phoneNumber,long bankId);
     void payAllBillsById(int billId, long bankId, String phoneNumber);
     List<Service> getAllServices (String phoneNumber,long bankId);

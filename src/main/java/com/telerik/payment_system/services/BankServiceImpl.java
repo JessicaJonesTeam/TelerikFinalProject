@@ -83,9 +83,18 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Double maxAmount(String phoneNumber,long bankId) {
+    public Double maxAmount(List<String> timeInterval, String phoneNumber, long bankId) {
 
-        List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId,phoneNumber);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = null, endDate = null;
+        try {
+            startDate = new Date(format.parse(timeInterval.get(0)).getTime());
+            endDate = new Date(format.parse(timeInterval.get(1)).getTime());
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+        }
+
+        List<Bill> bills = billRepository.getByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(startDate,endDate,bankId,phoneNumber);
         double max = 0;
         for (Bill bill : bills) {
             max = Math.max(max, bill.getAmount());
