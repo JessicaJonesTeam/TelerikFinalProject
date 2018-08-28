@@ -16,6 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
     private final AdminService adminService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;

@@ -18,4 +18,6 @@ public class Constants {
     public static final String SECRET = "NGPUPPIES_APP_SECRET";
 
     public static final int EXPIRATION_DURATION = 1200000;
+
+    public static final String COOKIE_BEARER = "COOKIE-BEARER";
 }

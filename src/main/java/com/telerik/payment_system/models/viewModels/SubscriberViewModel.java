@@ -11,7 +11,6 @@ public class SubscriberViewModel {
     private String firstName;
     private String lastName;
     private String egn;
-    private User bank;
 
     public String getPhoneNumber() {
         return this.phoneNumber;
@@ -43,14 +42,6 @@ public class SubscriberViewModel {
 
     public void setEgn(String egn) {
         this.egn = egn;
-    }
-
-    public User getBank() {
-        return this.bank;
-    }
-
-    public void setBank(User bank) {
-        this.bank = bank;
     }
 
     public long getId() {
