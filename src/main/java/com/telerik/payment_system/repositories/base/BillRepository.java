@@ -12,7 +12,6 @@ import java.util.List;
 public interface BillRepository extends JpaRepository<Bill, Long> {
 
 
-
     //They must have access to bill payment module where they can pay a particular bill (or selected list of bills) for their subscribers
     List<Bill> getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(long bankId, String phoneNumber);
 
@@ -25,11 +24,6 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
 
     Bill getByIdAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(int billId, long bankId, String phoneNumber);
 
-    List<Bill> getAllBySubscriber_Bank_Id (Long bankId);
-
-
-    //List<Bill> getAllByStartDateAndEndDateAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(Date startDate, Date endDate,String phoneNumber);
-
-    //List<Bill> findByStartDateBetweenAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(Date from, Date to, String phoneNumber);
+    List<Bill> getAllBySubscriber_Bank_Id(Long bankId);
 
 }

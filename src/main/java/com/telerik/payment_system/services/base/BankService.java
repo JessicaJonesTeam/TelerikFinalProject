@@ -11,15 +11,24 @@ import java.util.List;
 
 public interface BankService {
 
-    List<Bill> getAllNonPaymentBill(long bankId);
-    List<Bill> getAllNonPaymentBillsForSubscriber( long bankId,String phoneNumber);
-    SubscriberViewModel findByPhoneNumber(long bankId,String phoneNumber);
+    List<Bill> getAllUnpaidBill(long bankId);
+
+    List<Bill> getAllUnpaidBillsBySubscriber( long bankId,String phoneNumber);
+
+    Subscriber findByPhoneNumber(long bankId,String phoneNumber);
+
     List<Bill> getHistoryBySubscriber(String phoneNumber,long bankId);
+
     Double averageAmount (List <String> timeInterval, String phoneNumber, long bankId);
+
     Double maxAmount (List <String> timeInterval, String phoneNumber, long bankId);
+
     void payAllBillsBySubscriber(String phoneNumber,long bankId);
+
     void payAllBillsById(int billId, long bankId, String phoneNumber);
+
     List<Service> getAllServices (String phoneNumber,long bankId);
+
     HashMap<Subscriber, Double> findTop10(long bankId);
 
 

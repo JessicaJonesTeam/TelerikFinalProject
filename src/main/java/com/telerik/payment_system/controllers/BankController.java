@@ -35,21 +35,21 @@ public class BankController {
         String username = this.jwtParser.getUsernameFromToken(request);
         User user = (User)this.userRepository.getByUsername(username);
         long bankId = user.getId();
-        return bankService.getAllNonPaymentBill(bankId);
+        return bankService.getAllUnpaidBill(bankId);
     }
 
     @GetMapping("/{phoneNumber}")
-    public List<Bill> getAllNonePaymentBillsForSubscriber(
+    public List<Bill> getAllNonePaymentBillsBySubscriber(
             @PathVariable("phoneNumber") String phoneNumber,
             HttpServletRequest request) {
         String username = this.jwtParser.getUsernameFromToken(request);
         User user =(User)this.userRepository.getByUsername(username);
         long bankId = user.getId();
-        return bankService.getAllNonPaymentBillsForSubscriber(bankId, phoneNumber);
+        return bankService.getAllUnpaidBillsBySubscriber(bankId, phoneNumber);
     }
 
     @GetMapping("/subscribers/details/{phoneNumber}")
-    public SubscriberViewModel getSubscriberDetails(@PathVariable("phoneNumber") String phoneNumber, HttpServletRequest request) {
+    public Subscriber getSubscriberDetails(@PathVariable("phoneNumber") String phoneNumber, HttpServletRequest request) {
         String username = this.jwtParser.getUsernameFromToken(request);
         User user =(User)this.userRepository.getByUsername(username);
         long bankId = user.getId();
