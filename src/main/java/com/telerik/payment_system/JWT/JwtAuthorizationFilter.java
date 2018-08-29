@@ -30,44 +30,39 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain chain) throws ServletException,
-            IOException {
-        try {
+                                    FilterChain chain) throws IOException, ServletException {
+        String header = request.getHeader("Authorization");
 
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    getAuthentication(request);
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        if(header == null || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |
-                SignatureException | IllegalArgumentException e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token expired");
+            return;
         }
+
+        UsernamePasswordAuthenticationToken authenticationToken =
+                getAuthentication(request);
+
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+        chain.doFilter(request, response);
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = null;
-        Cookie cookie = WebUtils.getCookie(request, Constants.COOKIE_BEARER);
-        if (cookie != null) {
-            token = cookie.getValue();
-        }
+        String header = request.getHeader("Authorization");
 
-        if (token != null) {
-            String user = Jwts.parser()
-                    .setSigningKey(Constants.SECRET.getBytes())
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
+        String user = Jwts.parser()
+                .setSigningKey(Constants.SECRET.getBytes())
+                .parseClaimsJws(header.replace("Bearer ", ""))
+                .getBody()
+                .getSubject();
 
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(
-                        user,
-                        null,
-                        this.adminService.loadUserByUsername(user).getAuthorities()
-                );
-            }
+        if (user != null) {
+            return new UsernamePasswordAuthenticationToken(
+                    user,
+                    null,
+                    this.adminService.loadUserByUsername(user).getAuthorities()
+            );
         }
 
         return null;
     }
-
 }

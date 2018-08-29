@@ -13,10 +13,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             user.getPassword(),
 
 //                            todo: authorities or empy array list
-                            user.getAuthorities())
+                            new ArrayList<>())
             );
         } catch(IOException e) {
             throw new RuntimeException(e);
@@ -54,13 +54,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = Jwts.builder()
                 .setSubject(((User) authResult.getPrincipal()).getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + Constants.EXPIRATION_DURATION))
-                .signWith(SignatureAlgorithm.HS512, Constants.SECRET.getBytes())
+                .signWith(SignatureAlgorithm.HS256, Constants.SECRET.getBytes())
                 .compact();
 
-        Cookie cookie = new Cookie(Constants.COOKIE_BEARER, token);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        response.addCookie(cookie);
+        response.getWriter().append("{\"Authorization\": \"Bearer " + token + "\"}");
+        response.setContentType("application/json");
+//        response.addHeader("Authorization", "Bearer " + token);
+
 
     }
 }
