@@ -10,7 +10,7 @@ import java.util.List;
 public interface AdminService extends UserDetailsService {
 
 
-    List<UserViewModel> getAllUsers();
+    List<User> getAllUsers();
 
     void createUser(User user);
 
