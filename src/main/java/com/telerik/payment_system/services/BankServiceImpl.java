@@ -39,22 +39,21 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public List<Bill> getAllNonPaymentBill(long bankId) {
+    public List<Bill> getAllUnpaidBill(long bankId) {
         return billRepository.getAllBySubscriber_Bank_IdAndPaymentDateIsNullOrderByAmount(bankId);
     }
 
     @Override
-    public List<Bill> getAllNonPaymentBillsForSubscriber(long bankId,String phoneNumber) {
-//         CHECKED: working
-
+    public List<Bill> getAllUnpaidBillsBySubscriber(long bankId, String phoneNumber) {
         return billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(bankId, phoneNumber);
     }
 
+
     @Override
-    public SubscriberViewModel findByPhoneNumber(long bankId,String phoneNumber) {
+    public Subscriber findByPhoneNumber(long bankId,String phoneNumber) {
 //         CHECKED: working
 
-        return this.modelMapper.map(subscriberRepository.getByBank_IdAndPhoneNumber(bankId,phoneNumber),SubscriberViewModel.class);
+        return subscriberRepository.getByBank_IdAndPhoneNumber(bankId,phoneNumber);
     }
 
     @Override
@@ -121,7 +120,6 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public List<com.telerik.payment_system.entities.Service> getAllServices(String phoneNumber,long bankId) {
-        //TODO: filter by bankId
 
         List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId, phoneNumber);
         List<com.telerik.payment_system.entities.Service> services = new ArrayList<>();
@@ -146,7 +144,5 @@ public class BankServiceImpl implements BankService {
         }
         return top10;
     }
-
-
 
 }

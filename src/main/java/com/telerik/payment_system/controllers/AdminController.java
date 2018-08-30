@@ -27,7 +27,7 @@ public class AdminController {
 
 
     @GetMapping("/users")
-    public List<UserViewModel> listUsers() {
+    public List<User> listUsers() {
         return adminService.getAllUsers();
 
 
@@ -38,8 +38,6 @@ public class AdminController {
     public User getUser(@PathVariable("id") String id) {
         long userId = Long.parseLong(id);
         return this.userRepository.getById(userId);
-
-
     }
 
     @PostMapping("users/create")
