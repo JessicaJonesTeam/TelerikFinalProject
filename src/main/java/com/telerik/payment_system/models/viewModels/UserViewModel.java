@@ -1,10 +1,12 @@
 package com.telerik.payment_system.models.viewModels;
 
+
 public class UserViewModel {
     private Long id;
     private String username;
     private String EIK;
     private String email;
+    private String role;
 
 
     public Long getId() {
@@ -37,5 +39,13 @@ public class UserViewModel {
 
     public void setEIK(String EIK) {
         this.EIK = EIK;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

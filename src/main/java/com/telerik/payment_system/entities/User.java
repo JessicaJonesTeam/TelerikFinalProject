@@ -31,6 +31,8 @@ public class User implements UserDetails{
     @Column
     private String email;
 
+    private String role;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name="users_roles",
             joinColumns=@JoinColumn(name="user_id"),
@@ -102,6 +104,14 @@ public class User implements UserDetails{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return this.roles.get(0).getAuthority();
+    }
+
+    public void setRole(String role) {
+        this.role = getRoles().get(0).getAuthority();
     }
 
     @Override

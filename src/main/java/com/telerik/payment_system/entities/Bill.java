@@ -42,6 +42,15 @@ public class Bill {
 
     }
 
+    public Bill(Service service, Subscriber subscriber, Date startDate, Date endDate, double amount, Currency currency) {
+        this.service = service;
+        this.subscriber = subscriber;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.amount = amount;
+        this.currency = currency;
+        this.paymentDate = null;
+    }
     public Bill(Service service, Subscriber subscriber, Date startDate, Date endDate, double amount, Currency currency, Date paymentDate) {
         this.service = service;
         this.subscriber = subscriber;

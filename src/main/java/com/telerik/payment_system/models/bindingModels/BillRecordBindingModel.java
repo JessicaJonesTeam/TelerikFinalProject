@@ -13,7 +13,7 @@ public class BillRecordBindingModel {
     private Service service;
 
     @NotNull
-    private Subscriber subscriber;
+    private String subscriberPhone;
 
     @NotNull
     private Date startDate;
@@ -25,7 +25,7 @@ public class BillRecordBindingModel {
     private double amount;
 
     @NotNull
-    private Currency currency;
+    private String currencyName;
 
     @NotNull
     private Date paymentDate;
@@ -36,14 +36,6 @@ public class BillRecordBindingModel {
 
     public void setService(Service service) {
         this.service = service;
-    }
-
-    public Subscriber getSubscriber() {
-        return this.subscriber;
-    }
-
-    public void setSubscriber(Subscriber subscriber) {
-        this.subscriber = subscriber;
     }
 
     public Date getStartDate() {
@@ -70,12 +62,12 @@ public class BillRecordBindingModel {
         this.amount = amount;
     }
 
-    public Currency getCurrency() {
-        return this.currency;
+    public String getCurrencyName() {
+        return currencyName;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
+    public void setCurrencyName(String currencyName) {
+        this.currencyName = currencyName;
     }
 
     public Date getPaymentDate() {
@@ -86,5 +78,11 @@ public class BillRecordBindingModel {
         this.paymentDate = paymentDate;
     }
 
+    public String getSubscriberPhone() {
+        return subscriberPhone;
+    }
 
+    public void setSubscriberPhone(String subscriberPhone) {
+        this.subscriberPhone = subscriberPhone;
+    }
 }

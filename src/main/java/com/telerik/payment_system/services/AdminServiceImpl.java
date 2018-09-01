@@ -3,6 +3,8 @@ package com.telerik.payment_system.services;
 import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.Role;
 import com.telerik.payment_system.entities.User;
+import com.telerik.payment_system.models.bindingModels.BillRecordBindingModel;
+import com.telerik.payment_system.models.bindingModels.UserBindingModel;
 import com.telerik.payment_system.models.viewModels.UserViewModel;
 import com.telerik.payment_system.repositories.base.*;
 import com.telerik.payment_system.services.base.AdminService;
@@ -52,22 +54,25 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void createUser(User user) {
-
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    public void createUser(UserBindingModel userBindingModel) {
+        User user = new User();
+        user.setPassword(bCryptPasswordEncoder.encode(userBindingModel.getPassword()));
         List<Role> roles = new ArrayList<>();
-        System.out.println(roleRepository.findByAuthority(user.getRoles().get(0).getAuthority()));
-        roles.add(roleRepository.findByAuthority(user.getRoles().get(0).getAuthority()));
+//        System.out.println(roleRepository.findByAuthority(userBindingModel.getRoles().get(0).getAuthority()));
+        roles.add(roleRepository.findByAuthority(userBindingModel.getRoles().get(0).getAuthority()));
         user.setRoles(roles);
         this.userRepository.saveAndFlush(user);
 
     }
 
     @Override
-    public List<User> getAllUsers() {
-
-        return this.userRepository.findAll();
-
+    public List<UserViewModel> getAllUsers() {
+        List<User> users = this.userRepository.findAll();
+        List<UserViewModel> userViewModels = new ArrayList<>();
+        for (User user : users) {
+           userViewModels.add(modelMapper.map(user, UserViewModel.class));
+        }
+        return userViewModels;
     }
 
     @Override
@@ -81,20 +86,21 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
-    @Override
-    public void deleteUser(long id) {
-        this.userRepository.deleteById(id);
-    }
+
 
     @Override
-    public void createPayment(Bill billFeed) {
-        String phone = billFeed.getSubscriber().getPhoneNumber();
-        billFeed.setSubscriber(subscriberRepository.getByPhoneNumber(phone));
+    public void createPayment(BillRecordBindingModel billFeed) {
+        Bill bill = new Bill();
+        String phone = billFeed.getSubscriberPhone();
+        bill.setSubscriber(subscriberRepository.getByPhoneNumber(phone));
         String serviceName = billFeed.getService().getServiceName();
-        billFeed.setService(serviceRepository.getByServiceName(serviceName));
-        String currencyName = billFeed.getCurrency().getCurrencyName();
-        billFeed.setCurrency(currencyRepository.getByCurrencyName(currencyName));
-        this.billRepository.saveAndFlush(billFeed);
+        bill.setService(serviceRepository.getByServiceName(serviceName));
+        bill.setAmount( billFeed.getAmount());
+        bill.setStartDate(billFeed.getStartDate());
+        bill.setEndDate(billFeed.getEndDate());
+        String currencyName = billFeed.getCurrencyName();
+        bill.setCurrency(currencyRepository.getByCurrencyName(currencyName));
+        this.billRepository.saveAndFlush(bill);
     }
 
 

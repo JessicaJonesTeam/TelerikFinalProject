@@ -31,8 +31,8 @@ public class BankServiceTest {
 
         // Arrange
         List<Bill> bills= new ArrayList<>();
-        bills.add(new Bill(new Service(),new Subscriber(),new Date(1), new Date(1),1.99,new Currency(), null));
-        bills.add(new Bill(new Service(),new Subscriber(),new Date(1), new Date(1),1.99,new Currency(), null));
+        bills.add(new Bill(new Service(),new Subscriber(),new Date(1), new Date(1),1.99,new Currency()));
+        bills.add(new Bill(new Service(),new Subscriber(),new Date(1), new Date(1),1.99,new Currency()));
         Mockito.when(mockBillRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount
                 (1L,"0123456789")).thenReturn(bills);
 
