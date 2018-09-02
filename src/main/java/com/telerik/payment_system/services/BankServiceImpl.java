@@ -2,6 +2,7 @@ package com.telerik.payment_system.services;
 
 import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.Subscriber;
+import com.telerik.payment_system.models.viewModels.BillViewModel;
 import com.telerik.payment_system.models.viewModels.SubscriberViewModel;
 import com.telerik.payment_system.repositories.base.BillRepository;
 import com.telerik.payment_system.repositories.base.SubscriberRepository;
@@ -39,27 +40,39 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public List<Bill> getAllUnpaidBill(long bankId) {
-        return billRepository.getAllBySubscriber_Bank_IdAndPaymentDateIsNullOrderByAmount(bankId);
+    public List<BillViewModel> getAllUnpaidBill(long bankId) {
+        List<Bill> bills = this.billRepository.getAllBySubscriber_Bank_IdAndPaymentDateIsNullOrderByAmount(bankId);
+        List<BillViewModel> billViewModels = new ArrayList<>();
+        mapBillToViewModel(bills, billViewModels);
+        return billViewModels;
     }
 
     @Override
-    public List<Bill> getAllUnpaidBillsBySubscriber(long bankId, String phoneNumber) {
-        return billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(bankId, phoneNumber);
+    public List<BillViewModel> getAllUnpaidBillsBySubscriber(long bankId, String phoneNumber) {
+        List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(bankId, phoneNumber);
+        List<BillViewModel> billViewModels = new ArrayList<>();
+        mapBillToViewModel(bills, billViewModels);
+        return billViewModels;
     }
 
 
     @Override
-    public Subscriber findByPhoneNumber(long bankId,String phoneNumber) {
+    public SubscriberViewModel findByPhoneNumber(long bankId, String phoneNumber) {
 //         CHECKED: working
-
-        return subscriberRepository.getByBank_IdAndPhoneNumber(bankId,phoneNumber);
+        Subscriber subscriber = subscriberRepository.getByBank_IdAndPhoneNumber(bankId, phoneNumber);
+        SubscriberViewModel subscriberViewModel = new SubscriberViewModel();
+        subscriberViewModel.setFullName(subscriber.getFirstName()+" "+subscriber.getLastName());
+        subscriberViewModel.setEgn(subscriber.getEgn());
+        subscriberViewModel.setPhoneNumber(subscriber.getPhoneNumber());
+        return subscriberViewModel;
     }
 
     @Override
-    public List<Bill> getHistoryBySubscriber(String phoneNumber,long bankId) {
-
-        return billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId, phoneNumber);
+    public List<BillViewModel> getHistoryBySubscriber(String phoneNumber, long bankId) {
+        List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId, phoneNumber);
+        List<BillViewModel> billViewModels = new ArrayList<>();
+        mapBillToViewModel(bills, billViewModels);
+        return billViewModels;
     }
 
     @Override
@@ -73,7 +86,7 @@ public class BankServiceImpl implements BankService {
         } catch (ParseException e) {
             System.out.println(e.getMessage());
         }
-        List<Bill> bills = billRepository.getByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(startDate,endDate,bankId,phoneNumber);
+        List<Bill> bills = billRepository.getByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(startDate, endDate, bankId, phoneNumber);
         double sum = 0;
         for (Bill bill : bills) {
             sum += bill.getAmount();
@@ -93,7 +106,7 @@ public class BankServiceImpl implements BankService {
             System.out.println(e.getMessage());
         }
 
-        List<Bill> bills = billRepository.getByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(startDate,endDate,bankId,phoneNumber);
+        List<Bill> bills = billRepository.getByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(startDate, endDate, bankId, phoneNumber);
         double max = 0;
         for (Bill bill : bills) {
             max = Math.max(max, bill.getAmount());
@@ -102,7 +115,7 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public void payAllBillsBySubscriber(String phoneNumber,long bankId) {
+    public void payAllBillsBySubscriber(String phoneNumber, long bankId) {
 
         List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(bankId, phoneNumber);
         for (Bill bill : bills) {
@@ -112,14 +125,14 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public void payAllBillsById(int billId, long bankId, String phoneNumber) {
-        Bill bill = billRepository.getByIdAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(billId,bankId,phoneNumber);
+    public void payBillById(int billId, long bankId, String phoneNumber) {
+        Bill bill = billRepository.getByIdAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(billId, bankId, phoneNumber);
         bill.setPaymentDate(new Date(System.currentTimeMillis()));
         this.billRepository.saveAndFlush(bill);
     }
 
     @Override
-    public List<com.telerik.payment_system.entities.Service> getAllServices(String phoneNumber,long bankId) {
+    public List<com.telerik.payment_system.entities.Service> getAllServices(String phoneNumber, long bankId) {
 
         List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId, phoneNumber);
         List<com.telerik.payment_system.entities.Service> services = new ArrayList<>();
@@ -143,6 +156,22 @@ public class BankServiceImpl implements BankService {
             }
         }
         return top10;
+    }
+
+    private void mapBillToViewModel(List<Bill> bills, List<BillViewModel> billViewModels) {
+        for (Bill bill : bills) {
+            BillViewModel billViewModel = new BillViewModel();
+            billViewModel.setId(bill.getId());
+            billViewModel.setSubscriber(bill.getSubscriber().getFirstName() + " " + bill.getSubscriber().getLastName());
+            billViewModel.setPhoneNumber(bill.getSubscriber().getPhoneNumber());
+            billViewModel.setService(bill.getService().getServiceName());
+            billViewModel.setStartDate(bill.getStartDate());
+            billViewModel.setEndDate(bill.getEndDate());
+            billViewModel.setPaymentDate(bill.getPaymentDate());
+            billViewModel.setAmount(bill.getAmount());
+            billViewModel.setCurrency(bill.getCurrency().getCurrencyName());
+            billViewModels.add(billViewModel);
+        }
     }
 
 }

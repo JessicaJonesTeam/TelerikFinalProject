@@ -2,6 +2,7 @@ package com.telerik.payment_system.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties(value = { "roles" })
 public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +32,6 @@ public class User implements UserDetails{
 
     @Column
     private String email;
-
-    private String role;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name="users_roles",
@@ -106,13 +106,6 @@ public class User implements UserDetails{
         this.email = email;
     }
 
-    public String getRole() {
-        return this.roles.get(0).getAuthority();
-    }
-
-    public void setRole(String role) {
-        this.role = getRoles().get(0).getAuthority();
-    }
 
     @Override
     @Transient
@@ -137,5 +130,6 @@ public class User implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
 
 }

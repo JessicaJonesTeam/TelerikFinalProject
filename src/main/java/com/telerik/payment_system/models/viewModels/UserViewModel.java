@@ -2,6 +2,7 @@ package com.telerik.payment_system.models.viewModels;
 
 
 public class UserViewModel {
+
     private Long id;
     private String username;
     private String EIK;

@@ -5,6 +5,7 @@ import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.User;
 import com.telerik.payment_system.models.bindingModels.BillRecordBindingModel;
 import com.telerik.payment_system.models.bindingModels.UserBindingModel;
+import com.telerik.payment_system.models.bindingModels.UserEditBindingModel;
 import com.telerik.payment_system.models.viewModels.UserViewModel;
 import com.telerik.payment_system.repositories.base.UserRepository;
 import com.telerik.payment_system.services.base.AdminService;
@@ -33,17 +34,15 @@ public class AdminController {
 
 
     @GetMapping("/users")
-    public @ResponseBody String listUsers() {
-        return gson.toJson(this.adminService.getAllUsers());
-
-
+    public  @ResponseBody String  listUsers() {
+         return this.gson.toJson(this.adminService.getAllUsers());
     }
 
     //FOR TESTS ONLY
     @GetMapping("/users/{id}")
-    public @ResponseBody String getUser(@PathVariable("id") String id) {
+    public @ResponseBody String getUserById(@PathVariable("id") String id) {
         long userId = Long.parseLong(id);
-        return gson.toJson(this.userRepository.getById(userId));
+        return this.gson.toJson(this.adminService.getUserByID(userId));
     }
 
     @PostMapping("users/create")
@@ -52,19 +51,18 @@ public class AdminController {
         this.adminService.createUser(userBindingModel);
     }
 
-    @PostMapping("users/update/{id}")
-    public void updateUser(@PathVariable("id") String userId, @RequestBody User user) {
+    @PostMapping("users/update")
+    public void editUser(@RequestBody UserEditBindingModel userEditBindingModel) {
 //       TODO; handle if id doesnt exist
-        long id = Long.parseLong(userId);
-        adminService.editUser(id, user);
+        adminService.editUser(userEditBindingModel);
     }
 
-//    @DeleteMapping("users/delete/{id}")
-//    public void deleteUser(@PathVariable("id") String userId) {
-//        //       TODO; handle if id doesnt exist
-//        long id = Long.parseLong(userId);
-//        adminService.deleteUser(id);
-//    }
+    @PostMapping ("users/delete/{id}")
+    public void deleteUser(@PathVariable("id") String userId) {
+        //       TODO; handle if id doesnt exist
+        long id = Long.parseLong(userId);
+        adminService.deleteUser(id);
+    }
 
     @PostMapping("bills/create")
     public void createBill(@RequestBody BillRecordBindingModel recordBindingModel) {

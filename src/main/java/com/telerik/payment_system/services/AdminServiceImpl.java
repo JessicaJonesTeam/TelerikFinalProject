@@ -5,6 +5,7 @@ import com.telerik.payment_system.entities.Role;
 import com.telerik.payment_system.entities.User;
 import com.telerik.payment_system.models.bindingModels.BillRecordBindingModel;
 import com.telerik.payment_system.models.bindingModels.UserBindingModel;
+import com.telerik.payment_system.models.bindingModels.UserEditBindingModel;
 import com.telerik.payment_system.models.viewModels.UserViewModel;
 import com.telerik.payment_system.repositories.base.*;
 import com.telerik.payment_system.services.base.AdminService;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -38,10 +40,9 @@ public class AdminServiceImpl implements AdminService {
 
     private final CurrencyRepository currencyRepository;
 
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public AdminServiceImpl(UserRepository userRepository1, RoleRepository roleRepository1, SubscriberRepository subscriberRepository1, BCryptPasswordEncoder bCryptPasswordEncoder1, BillRepository billRepository1, ServiceRepository serviceRepository, CurrencyRepository currencyRepository, ModelMapper modelMapper) {
+    public AdminServiceImpl(UserRepository userRepository1, RoleRepository roleRepository1, SubscriberRepository subscriberRepository1, BCryptPasswordEncoder bCryptPasswordEncoder1, BillRepository billRepository1, ServiceRepository serviceRepository, CurrencyRepository currencyRepository) {
         this.userRepository = userRepository1;
 
         this.roleRepository = roleRepository1;
@@ -50,7 +51,6 @@ public class AdminServiceImpl implements AdminService {
         this.billRepository = billRepository1;
         this.serviceRepository = serviceRepository;
         this.currencyRepository = currencyRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -61,6 +61,9 @@ public class AdminServiceImpl implements AdminService {
 //        System.out.println(roleRepository.findByAuthority(userBindingModel.getRoles().get(0).getAuthority()));
         roles.add(roleRepository.findByAuthority(userBindingModel.getRoles().get(0).getAuthority()));
         user.setRoles(roles);
+        user.setUsername(userBindingModel.getUsername());
+        user.setEIK(userBindingModel.getEIK());
+        user.setEmail(userBindingModel.getEmail());
         this.userRepository.saveAndFlush(user);
 
     }
@@ -70,22 +73,49 @@ public class AdminServiceImpl implements AdminService {
         List<User> users = this.userRepository.findAll();
         List<UserViewModel> userViewModels = new ArrayList<>();
         for (User user : users) {
-           userViewModels.add(modelMapper.map(user, UserViewModel.class));
+            UserViewModel userViewModel = new UserViewModel();
+            userViewModel.setId(user.getId());
+            userViewModel.setUsername(user.getUsername());
+            userViewModel.setEmail(user.getEmail());
+            userViewModel.setEIK(user.getEIK());
+            userViewModel.setRole(user.getRoles().get(0).getAuthority());
+            userViewModels.add(userViewModel);
         }
         return userViewModels;
     }
 
     @Override
-    public void editUser(long id, User feed) {
+    public UserViewModel getUserByID(long id) {
         User user = this.userRepository.getById(id);
-        user.setEmail(feed.getEmail());
-        user.setUsername(feed.getUsername());
-        user.setEIK(feed.getEIK());
+        UserViewModel userViewModel = new UserViewModel();
+        userViewModel.setId(user.getId());
+        userViewModel.setUsername(user.getUsername());
+        userViewModel.setEmail(user.getEmail());
+        userViewModel.setEIK(user.getEIK());
+        userViewModel.setRole(user.getRoles().get(0).getAuthority());
+        return userViewModel;
+
+    }
+
+    @Override
+    public void editUser(UserEditBindingModel userEditBindingModel) {
+
+        long id = userEditBindingModel.getId();
+        User user = this.userRepository.getOne(id);
+        user.setPassword(bCryptPasswordEncoder.encode(userEditBindingModel.getPassword()));
+        user.setUsername(userEditBindingModel.getUsername());
+        user.setEIK(userEditBindingModel.getEIK());
+        user.setEmail(userEditBindingModel.getEmail());
 
         this.userRepository.saveAndFlush(user);
 
     }
 
+    @Override
+    public void deleteUser(long id) {
+        User user = this.userRepository.getOne(id);
+        this.userRepository.delete(user);
+    }
 
 
     @Override
@@ -95,7 +125,7 @@ public class AdminServiceImpl implements AdminService {
         bill.setSubscriber(subscriberRepository.getByPhoneNumber(phone));
         String serviceName = billFeed.getService().getServiceName();
         bill.setService(serviceRepository.getByServiceName(serviceName));
-        bill.setAmount( billFeed.getAmount());
+        bill.setAmount(billFeed.getAmount());
         bill.setStartDate(billFeed.getStartDate());
         bill.setEndDate(billFeed.getEndDate());
         String currencyName = billFeed.getCurrencyName();

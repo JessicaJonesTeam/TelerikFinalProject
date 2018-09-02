@@ -6,10 +6,8 @@ import com.telerik.payment_system.entities.User;
 
 
 public class SubscriberViewModel {
-    private long id;
     private String phoneNumber;
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private String egn;
 
     public String getPhoneNumber() {
@@ -20,20 +18,12 @@ public class SubscriberViewModel {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getFirstName() {
-        return this.firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEgn() {
@@ -44,12 +34,5 @@ public class SubscriberViewModel {
         this.egn = egn;
     }
 
-    public long getId() {
-        return this.id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
 }
