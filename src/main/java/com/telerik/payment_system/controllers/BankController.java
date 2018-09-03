@@ -25,18 +25,19 @@ public class BankController {
 
     private final JwtParser jwtParser;
 
-    private final UserRepository userRepository;
+//    private final UserRepository userRepository;
 
     private final Gson gson;
 
     @Autowired
-    public BankController(BankService bankService, JwtParser jwtParser, UserRepository userRepository, Gson gson) {
+    public BankController(BankService bankService, JwtParser jwtParser, Gson gson) {
         this.bankService = bankService;
         this.jwtParser = jwtParser;
-        this.userRepository = userRepository;
+//        this.userRepository = userRepository;
         this.gson = gson;
     }
 
+//has frontend
     @GetMapping("/bills")
     public @ResponseBody
     String getAllNonPaymentBill(HttpServletRequest request) {
@@ -45,7 +46,8 @@ public class BankController {
         return this.gson.toJson(bankService.getAllUnpaidBill(bankId));
     }
 
-    @GetMapping("/bills/{phoneNumber}")
+//has frontend
+    @GetMapping("/bills/unpaid/{phoneNumber}")
     public @ResponseBody
     String getAllNonePaymentBillsBySubscriber(
             @PathVariable("phoneNumber") String phoneNumber,
@@ -55,7 +57,25 @@ public class BankController {
         return this.gson.toJson(bankService.getAllUnpaidBillsBySubscriber(bankId, phoneNumber));
     }
 
-    @GetMapping("/subscribers/details/{phoneNumber}")
+    @GetMapping("/bills/{phoneNumber}")
+    public @ResponseBody
+    String getAllPaymentsBySubscriber(
+            @PathVariable("phoneNumber") String phoneNumber,
+            HttpServletRequest request) {
+
+        long bankId = jwtParser.getBankIdByUsernameFromToken(request);
+        return this.gson.toJson(bankService.getAllPaymentsBySubscriber(phoneNumber,bankId));
+    }
+
+    @GetMapping("/subscribers")
+    public @ResponseBody
+    String getAllSubscribers(HttpServletRequest request) {
+
+        long bankId = jwtParser.getBankIdByUsernameFromToken(request);
+        return this.gson.toJson(bankService.listAllSubscribers(bankId));
+    }
+
+    @GetMapping("/subscribers/{phoneNumber}")
     public @ResponseBody
     String getSubscriberDetails(@PathVariable("phoneNumber") String phoneNumber, HttpServletRequest request) {
 
@@ -96,9 +116,9 @@ public class BankController {
             HttpServletRequest request) {
 
         long bankId = jwtParser.getBankIdByUsernameFromToken(request);
-        bankService.payAllBillsBySubscriber(phoneNumber, bankId);
+        bankService.payAllPaymentsBySubscriber(phoneNumber, bankId);
     }
-
+//has frontend
     @GetMapping ("subscribers/pay/{phoneNumber}/{billId}")
     public void payAllBillsById(
             @PathVariable("phoneNumber") String phoneNumber,

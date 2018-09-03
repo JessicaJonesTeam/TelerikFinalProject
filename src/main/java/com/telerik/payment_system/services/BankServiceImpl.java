@@ -61,9 +61,15 @@ public class BankServiceImpl implements BankService {
 //         CHECKED: working
         Subscriber subscriber = subscriberRepository.getByBank_IdAndPhoneNumber(bankId, phoneNumber);
         SubscriberViewModel subscriberViewModel = new SubscriberViewModel();
+        subscriberViewModel.setId(subscriber.getId());
         subscriberViewModel.setFullName(subscriber.getFirstName()+" "+subscriber.getLastName());
         subscriberViewModel.setEgn(subscriber.getEgn());
         subscriberViewModel.setPhoneNumber(subscriber.getPhoneNumber());
+        List<BillViewModel> billViewModels= new ArrayList<>();
+//        List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumber(phoneNumber);
+
+        mapBillToViewModel(subscriber.getBills(),billViewModels);
+        subscriberViewModel.setBills(billViewModels);
         return subscriberViewModel;
     }
 
@@ -73,6 +79,21 @@ public class BankServiceImpl implements BankService {
         List<BillViewModel> billViewModels = new ArrayList<>();
         mapBillToViewModel(bills, billViewModels);
         return billViewModels;
+    }
+
+    @Override
+    public List<SubscriberViewModel> listAllSubscribers(long bankId) {
+        List<Subscriber> subscribers = this.subscriberRepository.getAllByBank_Id(bankId);
+        List<SubscriberViewModel> subscriberViewModels = new ArrayList<>();
+        for (Subscriber subscriber:subscribers) {
+            SubscriberViewModel subscriberViewModel = new SubscriberViewModel();
+            subscriberViewModel.setId(subscriber.getId());
+            subscriberViewModel.setFullName(subscriber.getFirstName()+" "+subscriber.getLastName());
+            subscriberViewModel.setEgn(subscriber.getEgn());
+            subscriberViewModel.setPhoneNumber(subscriber.getPhoneNumber());
+            subscriberViewModels.add(subscriberViewModel);
+        }
+        return subscriberViewModels;
     }
 
     @Override
@@ -114,8 +135,9 @@ public class BankServiceImpl implements BankService {
         return max;
     }
 
+
     @Override
-    public void payAllBillsBySubscriber(String phoneNumber, long bankId) {
+    public void payAllPaymentsBySubscriber(String phoneNumber, long bankId) {
 
         List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(bankId, phoneNumber);
         for (Bill bill : bills) {
@@ -156,6 +178,14 @@ public class BankServiceImpl implements BankService {
             }
         }
         return top10;
+    }
+
+    @Override
+    public List<BillViewModel> getAllPaymentsBySubscriber(String phoneNumber, long bankId) {
+        List<BillViewModel>billViewModels = new ArrayList<>();
+        List<Bill> bills = this.billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumber(bankId,phoneNumber);
+        mapBillToViewModel(bills,billViewModels);
+        return billViewModels;
     }
 
     private void mapBillToViewModel(List<Bill> bills, List<BillViewModel> billViewModels) {

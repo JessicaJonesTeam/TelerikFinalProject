@@ -20,11 +20,13 @@ public interface BankService {
 
     List<BillViewModel> getHistoryBySubscriber(String phoneNumber,long bankId);
 
+    List<SubscriberViewModel> listAllSubscribers(long bankId);
+
     Double averageAmount (List <String> timeInterval, String phoneNumber, long bankId);
 
     Double maxAmount (List <String> timeInterval, String phoneNumber, long bankId);
 
-    void payAllBillsBySubscriber(String phoneNumber,long bankId);
+    void payAllPaymentsBySubscriber(String phoneNumber,long bankId);
 
     void payBillById(int billId, long bankId, String phoneNumber);
 
@@ -33,4 +35,5 @@ public interface BankService {
     HashMap<Subscriber, Double> findTop10(long bankId);
 
 
+    List<BillViewModel> getAllPaymentsBySubscriber(String phoneNumber, long bankId);
 }
