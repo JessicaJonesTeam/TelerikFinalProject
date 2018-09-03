@@ -1,31 +1,39 @@
-//package com.telerik.payment_system.ServiceTests;
-//
-//import com.telerik.payment_system.entities.*;
-//import com.telerik.payment_system.repositories.base.BillRepository;
-//import com.telerik.payment_system.repositories.base.SubscriberRepository;
-//import com.telerik.payment_system.services.BankServiceImpl;
-//import org.junit.*;
-//import org.junit.runner.RunWith;
-//import org.mockito.*;
-//import org.mockito.runners.MockitoJUnitRunner;
-//import java.sql.Date;
-//import java.text.SimpleDateFormat;
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
-//
-//
-//@RunWith(MockitoJUnitRunner.class)
-//public class BankServiceTest {
-//
-//    @Mock
-//    private BillRepository mockBillRepository;
-//    @Mock
-//    private SubscriberRepository mockSubscriberRepository;
-//
-//    @InjectMocks
-//    private BankServiceImpl mockBankService;
-//
+package com.telerik.payment_system.ServiceTests;
+
+import com.telerik.payment_system.entities.*;
+import com.telerik.payment_system.repositories.base.BillRepository;
+import com.telerik.payment_system.repositories.base.SubscriberRepository;
+import com.telerik.payment_system.services.BankServiceImpl;
+import org.junit.*;
+import org.junit.runner.RunWith;
+import org.mockito.*;
+import org.mockito.runners.MockitoJUnitRunner;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+
+@RunWith(MockitoJUnitRunner.class)
+public class BankServiceTest {
+
+    @Mock
+    private BillRepository mockBillRepository;
+    @Mock
+    private SubscriberRepository mockSubscriberRepository;
+
+    @InjectMocks
+    private BankServiceImpl mockBankService;
+
+    @Test
+    public void assertTru(){
+        int x = 1;
+        int y = 1;
+
+        Assert.assertEquals(x, y);
+    }
+
 //    @Test
 //    public void getUnpaidBillBySubscriber_returnTheRightBills(){
 //
@@ -61,20 +69,20 @@
 //
 //
 //    @Test
-//    public void getPaidBillsBySubscriberWhenHistoryIsAsk_returnTheRightPayedBills(){
-//
-//        //Arrange
-//        List<Bill> bills= new ArrayList<>();
-//        bills.add(new Bill(new Service(),new Subscriber(),new Date(1), new Date(1),1.99,new Currency(), new Date(System.currentTimeMillis())));
-//        bills.add(new Bill(new Service(),new Subscriber(),new Date(1), new Date(1),1.99,new Currency(), new Date(System.currentTimeMillis())));
-//        Mockito.when(mockBillRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(1L, "0123456789"))
-//                .thenReturn(bills);
-//        //Act
-//        List<Bill> result = mockBankService.getHistoryBySubscriber("0123456789", 1L);
-//
-//        //Assert
-//        Assert.assertEquals(2, result.size());
-//    }
+////    public void getPaidBillsBySubscriberWhenHistoryIsAsk_returnTheRightPayedBills(){
+////
+////        //Arrange
+////        List<Bill> bills= new ArrayList<>();
+////        bills.add(new Bill(new Service(),new Subscriber(),new Date(1), new Date(1),1.99,new Currency(), new Date(System.currentTimeMillis())));
+////        bills.add(new Bill(new Service(),new Subscriber(),new Date(1), new Date(1),1.99,new Currency(), new Date(System.currentTimeMillis())));
+////        Mockito.when(mockBillRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(1L, "0123456789"))
+////                .thenReturn(bills);
+////        //Act
+////        List<Bill> result = mockBankService.getHistoryBySubscriber("0123456789", 1L);
+////
+////        //Assert
+////        Assert.assertEquals(2, result.size());
+////    }
 //
 //
 //    @Test
@@ -129,4 +137,4 @@
 //    }
 //
 //
-//}
+}
