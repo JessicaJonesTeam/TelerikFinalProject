@@ -34,6 +34,14 @@ public class BankServiceTest {
         Assert.assertEquals(x, y);
     }
 
+    @Test
+    public void assert23122(){
+        int x = 1;
+        int y = 1;
+
+        Assert.assertEquals(x, y);
+    }
+
 //    @Test
 //    public void getUnpaidBillBySubscriber_returnTheRightBills(){
 //
