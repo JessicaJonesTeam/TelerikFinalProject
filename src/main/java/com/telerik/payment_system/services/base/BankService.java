@@ -1,15 +1,11 @@
 package com.telerik.payment_system.services.base;
 
-import com.telerik.payment_system.entities.Bill;
-import com.telerik.payment_system.entities.Service;
-import com.telerik.payment_system.entities.Subscriber;
 import com.telerik.payment_system.models.viewModels.BillViewModel;
 import com.telerik.payment_system.models.viewModels.SubscriberViewModel;
 
-import java.sql.Date;
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public interface BankService {
 
@@ -31,10 +27,11 @@ public interface BankService {
 
     void payBillById(int billId, long bankId, String phoneNumber);
 
-    List<Service> getAllServices (String phoneNumber,long bankId);
-
-    HashMap<Subscriber, Double> findTop10(long bankId);
-
+    Set<String> getAllServices (String phoneNumber, long bankId);
 
     List<BillViewModel> getAllPaymentsBySubscriber(String phoneNumber, long bankId);
+
+    List<BillViewModel> get10RecentPayments(long bankId);
+
+    List<SubscriberViewModel> getFirst10SubscribersByTotalPaymentAmount(long bankId);
 }

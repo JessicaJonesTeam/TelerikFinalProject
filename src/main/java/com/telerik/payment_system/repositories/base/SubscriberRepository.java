@@ -11,8 +11,13 @@ import java.util.List;
 public interface SubscriberRepository extends JpaRepository<Subscriber, Long> {
     //    The client must be able to see personal details of a subscriber
     Subscriber getByPhoneNumber(String phoneNumber);
+
     Subscriber getByBank_IdAndPhoneNumber(Long bankId, String phoneNumber);
-    List<Subscriber>getAllByBank_Id(long bankId);
+
+    List<Subscriber> getAllByBank_Id(long bankId);
+
+    List<Subscriber> getFirst10ByBankIdOrderByTotalAmountPayedDesc(long bankId);
+
 
 }
 

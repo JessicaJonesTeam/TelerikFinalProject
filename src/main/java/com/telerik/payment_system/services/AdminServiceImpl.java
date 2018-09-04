@@ -2,6 +2,7 @@ package com.telerik.payment_system.services;
 
 import com.telerik.payment_system.entities.Bill;
 import com.telerik.payment_system.entities.Role;
+import com.telerik.payment_system.entities.Subscriber;
 import com.telerik.payment_system.entities.User;
 import com.telerik.payment_system.models.bindingModels.BillRecordBindingModel;
 import com.telerik.payment_system.models.bindingModels.UserBindingModel;
@@ -121,6 +122,8 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void createPayment(BillRecordBindingModel billFeed) {
         Bill bill = new Bill();
+        // TODO: CHANGED
+
         String phone = billFeed.getSubscriberPhone();
         bill.setSubscriber(subscriberRepository.getByPhoneNumber(phone));
         String serviceName = billFeed.getService().getServiceName();

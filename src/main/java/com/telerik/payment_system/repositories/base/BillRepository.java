@@ -28,5 +28,8 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
 
     List<Bill> getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumber(long bankId, String phoneNumber);
 
+    List<Bill>getFirst10BySubscriber_Bank_IdAndPaymentDateIsNotNullOrderByPaymentDateDesc (long bankId);
+
+
 
 }

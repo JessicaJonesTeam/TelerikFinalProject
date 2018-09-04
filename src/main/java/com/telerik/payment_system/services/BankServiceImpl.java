@@ -14,9 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -26,7 +24,6 @@ public class BankServiceImpl implements BankService {
 
     private final SubscriberRepository subscriberRepository;
 
-//    private final ModelMapper modelMapper;
 
     @Autowired
     public BankServiceImpl(BillRepository billRepository,
@@ -62,11 +59,7 @@ public class BankServiceImpl implements BankService {
         subscriberViewModel.setFullName(subscriber.getFirstName() + " " + subscriber.getLastName());
         subscriberViewModel.setEgn(subscriber.getEgn());
         subscriberViewModel.setPhoneNumber(subscriber.getPhoneNumber());
-        List<BillViewModel> billViewModels = new ArrayList<>();
-//        List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumber(phoneNumber);
 
-        mapBillToViewModel(subscriber.getBills(), billViewModels);
-        subscriberViewModel.setBills(billViewModels);
         return subscriberViewModel;
     }
 
@@ -82,14 +75,7 @@ public class BankServiceImpl implements BankService {
     public List<SubscriberViewModel> listAllSubscribers(long bankId) {
         List<Subscriber> subscribers = this.subscriberRepository.getAllByBank_Id(bankId);
         List<SubscriberViewModel> subscriberViewModels = new ArrayList<>();
-        for (Subscriber subscriber : subscribers) {
-            SubscriberViewModel subscriberViewModel = new SubscriberViewModel();
-            subscriberViewModel.setId(subscriber.getId());
-            subscriberViewModel.setFullName(subscriber.getFirstName() + " " + subscriber.getLastName());
-            subscriberViewModel.setEgn(subscriber.getEgn());
-            subscriberViewModel.setPhoneNumber(subscriber.getPhoneNumber());
-            subscriberViewModels.add(subscriberViewModel);
-        }
+        mapSubscribersToViewModels(subscribers, subscriberViewModels);
         return subscriberViewModels;
     }
 
@@ -140,6 +126,9 @@ public class BankServiceImpl implements BankService {
         List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(bankId, phoneNumber);
         for (Bill bill : bills) {
             bill.setPaymentDate(new Date(System.currentTimeMillis()));
+            Subscriber subscriber= subscriberRepository.getByPhoneNumber(phoneNumber);
+            subscriber.setTotalAmountPayed(subscriber.getTotalAmountPayed()+bill.getAmount());
+            this.subscriberRepository.saveAndFlush(subscriber);
             this.billRepository.saveAndFlush(bill);
         }
     }
@@ -148,34 +137,22 @@ public class BankServiceImpl implements BankService {
     public void payBillById(int billId, long bankId, String phoneNumber) {
         Bill bill = billRepository.getByIdAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(billId, bankId, phoneNumber);
         bill.setPaymentDate(new Date(System.currentTimeMillis()));
+        Subscriber subscriber= subscriberRepository.getByPhoneNumber(phoneNumber);
+        subscriber.setTotalAmountPayed(subscriber.getTotalAmountPayed()+bill.getAmount());
+        this.subscriberRepository.saveAndFlush(subscriber);
         this.billRepository.saveAndFlush(bill);
     }
 
     @Override
-    public List<com.telerik.payment_system.entities.Service> getAllServices(String phoneNumber, long bankId) {
+    public Set<String> getAllServices(String phoneNumber, long bankId) {
 
         List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId, phoneNumber);
-        List<com.telerik.payment_system.entities.Service> services = new ArrayList<>();
+
+        Set<String> services = new HashSet<>();
         for (Bill bill : bills) {
-            services.add(bill.getService());
+           services.add(bill.getService().getServiceName());
         }
         return services;
-    }
-
-    @Override
-    public HashMap<Subscriber, Double> findTop10(long bankId) {
-
-        HashMap<Subscriber, Double> top10 = new HashMap<>();
-        List<Bill> bills = billRepository.getAllBySubscriber_Bank_Id(bankId);
-        for (Bill bill : bills) {
-            if (!top10.containsKey(bill.getSubscriber())) {
-                top10.put(bill.getSubscriber(), bill.getAmount());
-            } else {
-                double temp = top10.get(bill.getSubscriber());
-                top10.put(bill.getSubscriber(), bill.getAmount() + temp);
-            }
-        }
-        return top10;
     }
 
     @Override
@@ -184,6 +161,36 @@ public class BankServiceImpl implements BankService {
         List<Bill> bills = this.billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumber(bankId, phoneNumber);
         mapBillToViewModel(bills, billViewModels);
         return billViewModels;
+    }
+
+    @Override
+    public List<BillViewModel> get10RecentPayments(long bankId) {
+        List<BillViewModel> billViewModels= new ArrayList<>();
+        List<Bill> bills = this.billRepository.getFirst10BySubscriber_Bank_IdAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId);
+        mapBillToViewModel(bills,billViewModels);
+        return billViewModels;
+    }
+
+    @Override
+    public List<SubscriberViewModel> getFirst10SubscribersByTotalPaymentAmount(long bankId) {
+        List<Subscriber> subscribers = this.subscriberRepository.getFirst10ByBankIdOrderByTotalAmountPayedDesc(bankId);
+        List<SubscriberViewModel> subscriberViewModels = new ArrayList<>();
+        mapSubscribersToViewModels(subscribers, subscriberViewModels);
+        return subscriberViewModels;
+    }
+
+    private void mapSubscribersToViewModels(List<Subscriber> subscribers, List<SubscriberViewModel> subscriberViewModels) {
+        for (Subscriber subscriber : subscribers) {
+            SubscriberViewModel subscriberViewModel = new SubscriberViewModel();
+            Set<String>services = getAllServices(subscriber.getPhoneNumber(),subscriber.getBank().getId());
+            subscriberViewModel.setServices(services);
+            subscriberViewModel.setId(subscriber.getId());
+            subscriberViewModel.setFullName(subscriber.getFirstName() + " " + subscriber.getLastName());
+            subscriberViewModel.setEgn(subscriber.getEgn());
+            subscriberViewModel.setPhoneNumber(subscriber.getPhoneNumber());
+            subscriberViewModel.setTotalPaid(subscriber.getTotalAmountPayed());
+            subscriberViewModels.add(subscriberViewModel);
+        }
     }
 
     private void mapBillToViewModel(List<Bill> bills, List<BillViewModel> billViewModels) {

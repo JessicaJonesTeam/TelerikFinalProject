@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,17 +37,22 @@ public class Subscriber {
     private List<Bill> bills;
 
 
-    public Subscriber() {
+    @Column
+    private double totalAmountPayed;
 
+
+    public Subscriber() {
+        bills = new ArrayList<>();
     }
 
-    public Subscriber(String phoneNumber, String firstName, String lastName, String egn, User bank, List<Bill> bills) {
+    public Subscriber(String phoneNumber, String firstName, String lastName, String egn, User bank, List<Bill> bills, double totalAmountPayed) {
         this.phoneNumber = phoneNumber;
         this.firstName = firstName;
         this.lastName = lastName;
         this.egn = egn;
         this.bank = bank;
         this.bills = bills;
+        this.totalAmountPayed = totalAmountPayed;
     }
 
     public String getPhoneNumber() {
@@ -103,6 +109,14 @@ public class Subscriber {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public double getTotalAmountPayed() {
+        return totalAmountPayed;
+    }
+
+    public void setTotalAmountPayed(double totalAmountPayed) {
+        this.totalAmountPayed = totalAmountPayed;
     }
 
 

@@ -5,6 +5,7 @@ import com.telerik.payment_system.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 public class SubscriberViewModel {
@@ -12,12 +13,10 @@ public class SubscriberViewModel {
     private String phoneNumber;
     private String fullName;
     private String egn;
-    private List<BillViewModel> bills;
+    private double totalPaid;
+    private Set<String> services;
 
 
-    public SubscriberViewModel() {
-        this.bills=new ArrayList<>();
-    }
 
     public String getPhoneNumber() {
         return this.phoneNumber;
@@ -51,11 +50,19 @@ public class SubscriberViewModel {
         this.id = id;
     }
 
-    public List<BillViewModel> getBills() {
-        return bills;
+    public double getTotalPaid() {
+        return totalPaid;
     }
 
-    public void setBills(List<BillViewModel> bills) {
-        this.bills = bills;
+    public void setTotalPaid(double totalPaid) {
+        this.totalPaid = totalPaid;
+    }
+
+    public Set<String> getServices() {
+        return services;
+    }
+
+    public void setServices(Set<String> services) {
+        this.services = services;
     }
 }

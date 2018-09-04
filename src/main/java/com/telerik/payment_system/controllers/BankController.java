@@ -2,8 +2,6 @@ package com.telerik.payment_system.controllers;
 
 import com.google.gson.Gson;
 import com.telerik.payment_system.Utilities.JwtParser;
-import com.telerik.payment_system.entities.Service;
-import com.telerik.payment_system.entities.Subscriber;
 
 import com.telerik.payment_system.services.base.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -30,11 +26,10 @@ public class BankController {
     public BankController(BankService bankService, JwtParser jwtParser, Gson gson) {
         this.bankService = bankService;
         this.jwtParser = jwtParser;
-//        this.userRepository = userRepository;
         this.gson = gson;
     }
 
-//has frontend
+    //has frontend
     @GetMapping("/bills")
     public @ResponseBody
     String getAllNonPaymentBill(HttpServletRequest request) {
@@ -43,7 +38,7 @@ public class BankController {
         return this.gson.toJson(bankService.getAllUnpaidBill(bankId));
     }
 
-//has frontend
+    //has frontend
     @GetMapping("/bills/unpaid/{phoneNumber}")
     public @ResponseBody
     String getAllNonePaymentBillsBySubscriber(
@@ -54,7 +49,7 @@ public class BankController {
         return this.gson.toJson(bankService.getAllUnpaidBillsBySubscriber(bankId, phoneNumber));
     }
 
-//has frontend
+    //has frontend
     @GetMapping("/bills/{phoneNumber}")
     public @ResponseBody
     String getAllPaymentsBySubscriber(
@@ -62,10 +57,10 @@ public class BankController {
             HttpServletRequest request) {
 
         long bankId = jwtParser.getBankIdByUsernameFromToken(request);
-        return this.gson.toJson(bankService.getAllPaymentsBySubscriber(phoneNumber,bankId));
+        return this.gson.toJson(bankService.getAllPaymentsBySubscriber(phoneNumber, bankId));
     }
 
-//has frontend
+    //has frontend
     @GetMapping("/subscribers")
     public @ResponseBody
     String getAllSubscribers(HttpServletRequest request) {
@@ -83,6 +78,7 @@ public class BankController {
         return this.gson.toJson(bankService.findByPhoneNumber(bankId, phoneNumber));
     }
 
+    //has frontend
     @GetMapping("/subscribers/history/{phoneNumber}")
     public @ResponseBody
     String getHistoryBySubscriber(@PathVariable("phoneNumber") String phoneNumber, HttpServletRequest request) {
@@ -107,13 +103,14 @@ public class BankController {
     @GetMapping("/subscribers/max/{phoneNumber}/{timeInterval}")
     public @ResponseBody
     String maxAmount(@PathVariable("phoneNumber") String phoneNumber,
-                            @PathVariable("timeInterval") List<String> timeInterval,
-                            HttpServletRequest request) {
+                     @PathVariable("timeInterval") List<String> timeInterval,
+                     HttpServletRequest request) {
 
         long bankId = jwtParser.getBankIdByUsernameFromToken(request);
         return this.gson.toJson(bankService.maxAmount(timeInterval, phoneNumber, bankId));
     }
 
+    //has frontend
     @GetMapping("subscribers/pay/{phoneNumber}")
     public void payAllBillsBySubscriber(
             @PathVariable("phoneNumber") String phoneNumber,
@@ -122,8 +119,9 @@ public class BankController {
         long bankId = jwtParser.getBankIdByUsernameFromToken(request);
         bankService.payAllPaymentsBySubscriber(phoneNumber, bankId);
     }
-//has frontend
-    @GetMapping ("subscribers/pay/{phoneNumber}/{billId}")
+
+    //has frontend
+    @GetMapping("subscribers/pay/{phoneNumber}/{billId}")
     public void payAllBillsById(
             @PathVariable("phoneNumber") String phoneNumber,
             @PathVariable("billId") int billId,
@@ -133,18 +131,30 @@ public class BankController {
         bankService.payBillById(billId, bankId, phoneNumber);
     }
 
-    @GetMapping("subscribers/service/{phoneNumber}")
-    public List<Service> getAllServices(@PathVariable("phoneNumber") String phoneNumber, HttpServletRequest request) {
+//    @GetMapping("subscribers/services/{phoneNumber}")
+//    public @ResponseBody
+//    String getAllServices(@PathVariable("phoneNumber") String phoneNumber, HttpServletRequest request) {
+//
+//        long bankId = jwtParser.getBankIdByUsernameFromToken(request);
+//        return this.gson.toJson(bankService.getAllServices(phoneNumber, bankId));
+//    }
+
+    //has frontend
+    @GetMapping("/bills/recent")
+    public @ResponseBody
+    String get10MostRecentPayments(HttpServletRequest request) {
 
         long bankId = jwtParser.getBankIdByUsernameFromToken(request);
-        return bankService.getAllServices(phoneNumber, bankId);
+        return this.gson.toJson(bankService.get10RecentPayments(bankId));
     }
 
-    @GetMapping("subscribers/top10")
-    public HashMap<Subscriber, Double> findTop10(HttpServletRequest request) {
+    //has frontend
+    @GetMapping("/subscribers/top")
+    public @ResponseBody
+    String get10SubscribersBiggestAmountPaid(HttpServletRequest request) {
 
         long bankId = jwtParser.getBankIdByUsernameFromToken(request);
-        return bankService.findTop10(bankId);
+        return this.gson.toJson(bankService.getFirst10SubscribersByTotalPaymentAmount(bankId));
     }
 
 }
