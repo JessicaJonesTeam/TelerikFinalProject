@@ -7,6 +7,7 @@ import com.telerik.payment_system.models.viewModels.BillViewModel;
 import com.telerik.payment_system.models.viewModels.SubscriberViewModel;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface BankService {
 
     List<SubscriberViewModel> listAllSubscribers(long bankId);
 
-    Double averageAmount (List <String> timeInterval, String phoneNumber, long bankId);
+    Double averageAmount (List<String> timeInterval, String phoneNumber, long bankId) throws ParseException;
 
     Double maxAmount (List <String> timeInterval, String phoneNumber, long bankId);
 

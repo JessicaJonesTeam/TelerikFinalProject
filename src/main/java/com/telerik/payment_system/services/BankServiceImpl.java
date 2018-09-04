@@ -7,11 +7,9 @@ import com.telerik.payment_system.models.viewModels.SubscriberViewModel;
 import com.telerik.payment_system.repositories.base.BillRepository;
 import com.telerik.payment_system.repositories.base.SubscriberRepository;
 import com.telerik.payment_system.services.base.BankService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -28,15 +26,14 @@ public class BankServiceImpl implements BankService {
 
     private final SubscriberRepository subscriberRepository;
 
-    private final ModelMapper modelMapper;
+//    private final ModelMapper modelMapper;
 
     @Autowired
     public BankServiceImpl(BillRepository billRepository,
-                           SubscriberRepository subscriberRepository,
-                           ModelMapper modelMapper) {
+                           SubscriberRepository subscriberRepository) {
         this.billRepository = billRepository;
         this.subscriberRepository = subscriberRepository;
-        this.modelMapper = modelMapper;
+//        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -62,13 +59,13 @@ public class BankServiceImpl implements BankService {
         Subscriber subscriber = subscriberRepository.getByBank_IdAndPhoneNumber(bankId, phoneNumber);
         SubscriberViewModel subscriberViewModel = new SubscriberViewModel();
         subscriberViewModel.setId(subscriber.getId());
-        subscriberViewModel.setFullName(subscriber.getFirstName()+" "+subscriber.getLastName());
+        subscriberViewModel.setFullName(subscriber.getFirstName() + " " + subscriber.getLastName());
         subscriberViewModel.setEgn(subscriber.getEgn());
         subscriberViewModel.setPhoneNumber(subscriber.getPhoneNumber());
-        List<BillViewModel> billViewModels= new ArrayList<>();
+        List<BillViewModel> billViewModels = new ArrayList<>();
 //        List<Bill> bills = billRepository.getAllBySubscriber_PhoneNumber(phoneNumber);
 
-        mapBillToViewModel(subscriber.getBills(),billViewModels);
+        mapBillToViewModel(subscriber.getBills(), billViewModels);
         subscriberViewModel.setBills(billViewModels);
         return subscriberViewModel;
     }
@@ -85,10 +82,10 @@ public class BankServiceImpl implements BankService {
     public List<SubscriberViewModel> listAllSubscribers(long bankId) {
         List<Subscriber> subscribers = this.subscriberRepository.getAllByBank_Id(bankId);
         List<SubscriberViewModel> subscriberViewModels = new ArrayList<>();
-        for (Subscriber subscriber:subscribers) {
+        for (Subscriber subscriber : subscribers) {
             SubscriberViewModel subscriberViewModel = new SubscriberViewModel();
             subscriberViewModel.setId(subscriber.getId());
-            subscriberViewModel.setFullName(subscriber.getFirstName()+" "+subscriber.getLastName());
+            subscriberViewModel.setFullName(subscriber.getFirstName() + " " + subscriber.getLastName());
             subscriberViewModel.setEgn(subscriber.getEgn());
             subscriberViewModel.setPhoneNumber(subscriber.getPhoneNumber());
             subscriberViewModels.add(subscriberViewModel);
@@ -99,7 +96,7 @@ public class BankServiceImpl implements BankService {
     @Override
     public Double averageAmount(List<String> timeInterval, String phoneNumber, long bankId) {
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = null, endDate = null;
         try {
             startDate = new Date(format.parse(timeInterval.get(0)).getTime());
@@ -107,9 +104,10 @@ public class BankServiceImpl implements BankService {
         } catch (ParseException e) {
             System.out.println(e.getMessage());
         }
-        List<Bill> bills = billRepository.getByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(startDate, endDate, bankId, phoneNumber);
+        List<Bill> bills = billRepository.getAllByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(startDate, endDate, bankId, phoneNumber);
         double sum = 0;
         for (Bill bill : bills) {
+
             sum += bill.getAmount();
         }
         return sum / bills.size();
@@ -127,7 +125,7 @@ public class BankServiceImpl implements BankService {
             System.out.println(e.getMessage());
         }
 
-        List<Bill> bills = billRepository.getByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(startDate, endDate, bankId, phoneNumber);
+        List<Bill> bills = billRepository.getAllByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(startDate, endDate, bankId, phoneNumber);
         double max = 0;
         for (Bill bill : bills) {
             max = Math.max(max, bill.getAmount());
@@ -182,9 +180,9 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public List<BillViewModel> getAllPaymentsBySubscriber(String phoneNumber, long bankId) {
-        List<BillViewModel>billViewModels = new ArrayList<>();
-        List<Bill> bills = this.billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumber(bankId,phoneNumber);
-        mapBillToViewModel(bills,billViewModels);
+        List<BillViewModel> billViewModels = new ArrayList<>();
+        List<Bill> bills = this.billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumber(bankId, phoneNumber);
+        mapBillToViewModel(bills, billViewModels);
         return billViewModels;
     }
 

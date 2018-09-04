@@ -20,12 +20,13 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     // A client should be able to see a history of the payments for its subscribers sorted descending by the date of payment
     List<Bill> getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(long bankId, String phoneNumber);
 
-    List<Bill> getByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(Date startDate, Date endDate, long bankId, String phoneNumber);
+    List<Bill> getAllByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(Date startDate, Date endDate, long bankId, String phoneNumber);
 
     Bill getByIdAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNullOrderByAmount(int billId, long bankId, String phoneNumber);
 
     List<Bill> getAllBySubscriber_Bank_Id(Long bankId);
 
     List<Bill> getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumber(long bankId, String phoneNumber);
+
 
 }
