@@ -12,31 +12,31 @@ import java.util.*;
 
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties(value = { "roles" })
-public class User implements UserDetails{
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private long id;
 
-    @Column()
+    @Column(unique = true,nullable = false)
     private String username;
 
     @Column
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Column
+    @Column(unique = true,nullable = false)
     private String EIK;
 
     @Column
     private String email;
 
+    @Column
+    private boolean enabled = true;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name="users_roles",
-            joinColumns=@JoinColumn(name="user_id"),
-            inverseJoinColumns=@JoinColumn(name="role_id"))
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
 
@@ -108,28 +108,26 @@ public class User implements UserDetails{
 
 
     @Override
-    @Transient
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
-    @Transient
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
-    @Transient
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
-    @Transient
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
-
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 }

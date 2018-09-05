@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -35,11 +37,18 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .disable()
 // for test
 //                .authorizeRequests().anyRequest().permitAll();
-        //config
+//                config
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/bank/**").hasRole("USER")
                 .anyRequest().authenticated()
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login?logout")
+                .and()
+                .exceptionHandling().accessDeniedPage("/error/403")
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.adminService))
@@ -56,7 +65,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedHeader("Access-Control-Allow-Origin");
+        config.addAllowedHeader("Authorization");
+        config.addAllowedHeader("Content-type");
+        config.addAllowedOrigin("http://127.0.0.1:8081");
+        config.addAllowedMethod("*");
+
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
+
 }

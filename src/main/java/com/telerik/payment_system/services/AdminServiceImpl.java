@@ -59,8 +59,8 @@ public class AdminServiceImpl implements AdminService {
         User user = new User();
         user.setPassword(bCryptPasswordEncoder.encode(userBindingModel.getPassword()));
         List<Role> roles = new ArrayList<>();
-//        System.out.println(roleRepository.findByAuthority(userBindingModel.getRoles().get(0).getAuthority()));
         roles.add(roleRepository.findByAuthority(userBindingModel.getRoles().get(0).getAuthority()));
+        user.setEnabled(true);
         user.setRoles(roles);
         user.setUsername(userBindingModel.getUsername());
         user.setEIK(userBindingModel.getEIK());
@@ -71,7 +71,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<UserViewModel> getAllUsers() {
-        List<User> users = this.userRepository.findAll();
+        List<User> users = this.userRepository.getAllByEnabledIsTrue();
         List<UserViewModel> userViewModels = new ArrayList<>();
         for (User user : users) {
             UserViewModel userViewModel = new UserViewModel();
@@ -113,9 +113,10 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void deleteUser(long id) {
-        User user = this.userRepository.getOne(id);
-        this.userRepository.delete(user);
+    public void deleteUser(String username) {
+        User user =(User)this.loadUserByUsername(username);
+        user.setEnabled(false);
+        this.userRepository.saveAndFlush(user);
     }
 
 
@@ -134,6 +135,12 @@ public class AdminServiceImpl implements AdminService {
         String currencyName = billFeed.getCurrencyName();
         bill.setCurrency(currencyRepository.getByCurrencyName(currencyName));
         this.billRepository.saveAndFlush(bill);
+    }
+
+    @Override
+    public void changePassword(long userId, String password) {
+        User user = userRepository.getById(userId);
+        user.setPassword(bCryptPasswordEncoder.encode(password));
     }
 
 

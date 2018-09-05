@@ -19,8 +19,10 @@ public interface AdminService extends UserDetailsService {
 
     void editUser(UserEditBindingModel userEditBindingModel);
 
-    void deleteUser(long id);
+    void deleteUser(String username);
 
     void createPayment(BillRecordBindingModel billRecordBindingModel);
+
+    void changePassword(long userId, String password);
 
 }

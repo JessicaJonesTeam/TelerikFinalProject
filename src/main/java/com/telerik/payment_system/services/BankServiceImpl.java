@@ -30,7 +30,6 @@ public class BankServiceImpl implements BankService {
                            SubscriberRepository subscriberRepository) {
         this.billRepository = billRepository;
         this.subscriberRepository = subscriberRepository;
-//        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -52,7 +51,6 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public SubscriberViewModel findByPhoneNumber(long bankId, String phoneNumber) {
-//         CHECKED: working
         Subscriber subscriber = subscriberRepository.getByBank_IdAndPhoneNumber(bankId, phoneNumber);
         SubscriberViewModel subscriberViewModel = new SubscriberViewModel();
         subscriberViewModel.setId(subscriber.getId());
@@ -86,15 +84,21 @@ public class BankServiceImpl implements BankService {
         Date startDate = null, endDate = null;
         try {
             startDate = new Date(format.parse(timeInterval.get(0)).getTime());
+            System.out.println(startDate);
             endDate = new Date(format.parse(timeInterval.get(1)).getTime());
+            System.out.println(endDate);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
         }
-        List<Bill> bills = billRepository.getAllByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(startDate, endDate, bankId, phoneNumber);
+        List<Bill> bills = billRepository.findAllByPaymentDateIsNotNullAndSubscriber_BankIdAndSubscriberPhoneNumberAndPaymentDateIsBetween(bankId,phoneNumber,startDate, endDate);
+        System.out.println(bills.size());
         double sum = 0;
         for (Bill bill : bills) {
 
             sum += bill.getAmount();
+        }
+        if (bills.size()==0){
+            return 0.0;
         }
         return sum / bills.size();
     }
@@ -111,7 +115,7 @@ public class BankServiceImpl implements BankService {
             System.out.println(e.getMessage());
         }
 
-        List<Bill> bills = billRepository.getAllByStartDateBetweenAndSubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(startDate, endDate, bankId, phoneNumber);
+        List<Bill> bills = billRepository.findAllByPaymentDateIsNotNullAndSubscriber_BankIdAndSubscriberPhoneNumberAndPaymentDateIsBetween(  bankId,  phoneNumber, startDate,  endDate);
         double max = 0;
         for (Bill bill : bills) {
             max = Math.max(max, bill.getAmount());

@@ -10,13 +10,15 @@ public class Constants {
 
     public static final String PASSWORD_LENGTH = "Password should be between 4 and 30 symbols";
 
-    public static final String FULL_NAME_LENGTH = "Name should be at least 3 symbols.";
+    public static final String EIK_LENGTH = "Username should be between 13 and 15 symbols";
 
-    public static final String ENTER_VALID_EMAIL = "Name should be at least 3 symbols.";
+    public static final String INVALID_EMAIL = "Invalid email.";
 
     //Security
     public static final String SECRET = "NGPUPPIES_APP_SECRET";
 
     public static final int EXPIRATION_DURATION = 1200000;
+
+
 
 }

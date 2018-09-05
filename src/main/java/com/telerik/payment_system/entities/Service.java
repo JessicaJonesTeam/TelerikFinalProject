@@ -14,7 +14,6 @@ public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private long id;
 
     @Column

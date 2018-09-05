@@ -1,27 +1,29 @@
 package com.telerik.payment_system.models.bindingModels;
 
+import com.telerik.payment_system.constants.Constants;
 import com.telerik.payment_system.entities.Role;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class UserEditBindingModel {
 
     private long id;
 
-    @NotNull
+    @Size(min =4,max = 20,message = Constants.USERNAME_LENGTH)
     private String username;
 
-    @NotNull
     private String password;
 
-    @NotNull
+    @Size(min =13,max = 15,message = Constants.EIK_LENGTH)
     private String EIK;
 
+    @Pattern(regexp = "^[A-Za-z0-9][A-Za-z0-9.-_]*[A-Za-z0-9]@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\\w+$", message = Constants.INVALID_EMAIL)
     @NotNull
     private String email;
 
-    @NotNull
     private List<Role> roles;
 
 

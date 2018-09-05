@@ -50,6 +50,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) {
+
+
         String token = Jwts.builder()
                 .setSubject(((User) authResult.getPrincipal()).getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + Constants.EXPIRATION_DURATION))
@@ -68,7 +70,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     .append(", \"Role\": \"").append(userRole)
                     .append("\"}\n");
 
-        } catch (Exception e) {
+        } catch (
+
+                Exception e) {
             e.printStackTrace();
         }
 //        response.addHeader("Authorization", "Bearer " + token);
