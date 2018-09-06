@@ -61,6 +61,15 @@ public class BankController {
     }
 
     //has frontend
+    @GetMapping("/bills/history")
+    public @ResponseBody
+    String getHistoryByBankID( HttpServletRequest request) {
+
+        long bankId = jwtParser.getBankIdByUsernameFromToken(request);
+        return this.gson.toJson(bankService.getHistoryByBankID(bankId));
+    }
+
+    //has frontend
     @GetMapping("/subscribers")
     public @ResponseBody
     String getAllSubscribers(HttpServletRequest request) {
@@ -86,6 +95,7 @@ public class BankController {
         long bankId = jwtParser.getBankIdByUsernameFromToken(request);
         return this.gson.toJson(bankService.getHistoryBySubscriber(phoneNumber, bankId));
     }
+
 
     //has frontend
     @GetMapping("/subscribers/average/{phoneNumber}/{timeInterval}")

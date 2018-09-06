@@ -68,6 +68,13 @@ public class BankServiceImpl implements BankService {
         mapBillToViewModel(bills, billViewModels);
         return billViewModels;
     }
+    @Override
+    public List<BillViewModel> getHistoryByBankID( long bankId) {
+        List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId);
+        List<BillViewModel> billViewModels = new ArrayList<>();
+        mapBillToViewModel(bills, billViewModels);
+        return billViewModels;
+    }
 
     @Override
     public List<SubscriberViewModel> listAllSubscribers(long bankId) {

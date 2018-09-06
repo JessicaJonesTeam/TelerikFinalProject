@@ -30,6 +30,8 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
 
     List<Bill>findAllByPaymentDateIsNotNullAndSubscriber_BankIdAndSubscriberPhoneNumberAndPaymentDateIsBetween( long bankId, String phoneNumber,Date startDate, Date endDate);
 
+    List<Bill>getAllBySubscriber_Bank_IdAndPaymentDateIsNotNullOrderByPaymentDateDesc (long bankId);
+
 
 
 

@@ -34,4 +34,6 @@ public interface BankService {
     List<BillViewModel> get10RecentPayments(long bankId);
 
     List<SubscriberViewModel> getFirst10SubscribersByTotalPaymentAmount(long bankId);
+
+    List<BillViewModel>getHistoryByBankID(long bankId);
 }
