@@ -1,6 +1,7 @@
 package com.telerik.payment_system.services.base;
 
 import com.telerik.payment_system.models.bindingModels.BillRecordBindingModel;
+import com.telerik.payment_system.models.bindingModels.ChangePassword;
 import com.telerik.payment_system.models.bindingModels.UserBindingModel;
 import com.telerik.payment_system.models.bindingModels.UserEditBindingModel;
 import com.telerik.payment_system.models.viewModels.UserViewModel;
@@ -23,6 +24,6 @@ public interface AdminService extends UserDetailsService {
 
     void createPayment(BillRecordBindingModel billRecordBindingModel);
 
-    void changePassword(long userId, String password);
+    void changePassword(long userId, ChangePassword changePassword);
 
 }

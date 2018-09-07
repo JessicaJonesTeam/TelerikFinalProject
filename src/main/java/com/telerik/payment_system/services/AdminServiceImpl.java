@@ -5,6 +5,7 @@ import com.telerik.payment_system.entities.Role;
 import com.telerik.payment_system.entities.Subscriber;
 import com.telerik.payment_system.entities.User;
 import com.telerik.payment_system.models.bindingModels.BillRecordBindingModel;
+import com.telerik.payment_system.models.bindingModels.ChangePassword;
 import com.telerik.payment_system.models.bindingModels.UserBindingModel;
 import com.telerik.payment_system.models.bindingModels.UserEditBindingModel;
 import com.telerik.payment_system.models.viewModels.UserViewModel;
@@ -59,7 +60,12 @@ public class AdminServiceImpl implements AdminService {
         User user = new User();
         user.setPassword(bCryptPasswordEncoder.encode(userBindingModel.getPassword()));
         List<Role> roles = new ArrayList<>();
-        roles.add(roleRepository.findByAuthority(userBindingModel.getRoles().get(0).getAuthority()));
+        if (userBindingModel.getRoles().get(0).getAuthority().equals(this.roleRepository.getOne(1L).getAuthority())) {
+            roles.add(roleRepository.findByAuthority("ROLE_CHANGEPASSWORD"));
+        } else {
+            roles.add(roleRepository.findByAuthority(userBindingModel.getRoles().get(0).getAuthority()));
+        }
+        user.setRoles(roles);
         user.setEnabled(true);
         user.setRoles(roles);
         user.setUsername(userBindingModel.getUsername());
@@ -67,7 +73,7 @@ public class AdminServiceImpl implements AdminService {
         user.setEmail(userBindingModel.getEmail());
         this.userRepository.saveAndFlush(user);
 
-    }
+}
 
     @Override
     public List<UserViewModel> getAllUsers() {
@@ -114,7 +120,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteUser(String username) {
-        User user =(User)this.loadUserByUsername(username);
+        User user = (User) this.loadUserByUsername(username);
         user.setEnabled(false);
         this.userRepository.saveAndFlush(user);
     }
@@ -138,9 +144,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void changePassword(long userId, String password) {
+    public void changePassword(long userId, ChangePassword changePassword) {
         User user = userRepository.getById(userId);
-        user.setPassword(bCryptPasswordEncoder.encode(password));
+        List<Role> roles = new ArrayList<>();
+        roles.add(this.roleRepository.getOne(1L));
+        user.setRoles(roles);
+        user.setPassword(bCryptPasswordEncoder.encode(changePassword.getPassword()));
+        this.userRepository.saveAndFlush(user);
     }
 
 

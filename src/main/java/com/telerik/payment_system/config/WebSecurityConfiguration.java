@@ -40,6 +40,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                config
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/change-password/**").hasRole("CHANGEPASSWORD")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/bank/**").hasRole("USER")
                 .anyRequest().authenticated()
