@@ -87,7 +87,7 @@ public class BankServiceImpl implements BankService {
     @Override
     public Double averageAmount(List<String> timeInterval, String phoneNumber, long bankId) {
 
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = null, endDate = null;
         try {
             startDate = new Date(format.parse(timeInterval.get(0)).getTime());
@@ -117,7 +117,9 @@ public class BankServiceImpl implements BankService {
         Date startDate = null, endDate = null;
         try {
             startDate = new Date(format.parse(timeInterval.get(0)).getTime());
+            System.out.println(startDate);
             endDate = new Date(format.parse(timeInterval.get(1)).getTime());
+            System.out.println(endDate);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
         }
