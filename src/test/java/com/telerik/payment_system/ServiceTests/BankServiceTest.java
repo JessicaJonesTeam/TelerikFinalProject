@@ -243,7 +243,7 @@ public class BankServiceTest {
     @Test
     public void getTenMostRecentPaymentsByBankId_ReturnCorrectBills() {
         List<Bill> bills = new ArrayList<>();
-        bills.add(new Bill(new Service(), new Subscriber(), new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), 1, new Currency(), new Date(System.currentTimeMillis())));
+        bills.add(new Bill(new Service(), new Subscriber(), new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), 1, new Currency(), new Date(System.currentTimeMillis()-24*60*60*1000)));
         bills.add(new Bill(new Service(), new Subscriber(), new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), 2, new Currency(), new Date(System.currentTimeMillis())));
 
         Mockito.when(mockBillRepository.getFirst10BySubscriber_Bank_IdAndPaymentDateIsNotNullOrderByPaymentDateDesc(1L)).thenReturn(bills);
@@ -251,13 +251,14 @@ public class BankServiceTest {
         List<BillViewModel> result = mockBankService.get10RecentPayments(1L);
 
         Assert.assertEquals(2, result.size());
+
     }
 
     @Test
     public void getFirst10SubscribersByTotalPaymentAmount_ReturnRightSubscribers() {
 
         List<Subscriber> subscribers = new ArrayList<>();
-        subscribers.add(new Subscriber("0123456789","test","test","123",new User(),new ArrayList<>(),2));
+        subscribers.add(new Subscriber("01234567890","test","test","123",new User(),new ArrayList<>(),2));
         subscribers.add(new Subscriber("0123456781","test1","test1","123",new User(),new ArrayList<>(),1));
 
         Mockito.when(mockSubscriberRepository.getFirst10ByBankIdOrderByTotalAmountPayedDesc(1L)).thenReturn(subscribers);

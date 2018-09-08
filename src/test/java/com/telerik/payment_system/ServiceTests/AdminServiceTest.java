@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,22 +33,14 @@ public class AdminServiceTest {
     AdminServiceImpl mockAdminService;
 
     @Test
-    public void CreateNewUser_ReturnsCorrectNewUser(){
+    public void getUserByUsername_ReturnRightUsers() {
+        User user = new User("test1", "test1","123","123");
 
-        List<User> users = new ArrayList<>();
-        users.add(new User());
-        users.add(new User());
+        Mockito.when(mockUserRepository.getByUsername(user.getUsername())).thenReturn(user);
 
-        Mockito.when(mockUserRepository.findAll()).thenReturn(users);
+        UserDetails userDetails = mockAdminService.loadUserByUsername("test1");
 
-//        List<User> result = mockAdminService.getAllUsers();
-
-//        Assert.assertEquals(2, result.size());
-
-
+        Assert.assertEquals(userDetails.getUsername(), "test1");
     }
-
-
-
 
 }
