@@ -1,2 +1,3 @@
 # TelerikFinalProject
-https://imgur.com/77oKA4T
+
+![Screenshot](https://imgur.com/77oKA4T)
