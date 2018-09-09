@@ -1,11 +1,9 @@
-package com.telerik.payment_system.ServiceTests;
+package com.payment_system.ServiceTests;
 
 
-import com.telerik.payment_system.entities.User;
-import com.telerik.payment_system.models.viewModels.UserViewModel;
-import com.telerik.payment_system.repositories.base.UserRepository;
-import com.telerik.payment_system.services.AdminServiceImpl;
-import com.telerik.payment_system.services.base.AdminService;
+import com.payment_system.entities.User;
+import com.payment_system.repositories.base.UserRepository;
+import com.payment_system.services.AdminServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,8 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 

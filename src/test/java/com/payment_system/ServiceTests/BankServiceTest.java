@@ -1,17 +1,16 @@
-package com.telerik.payment_system.ServiceTests;
+package com.payment_system.ServiceTests;
 
-import com.telerik.payment_system.entities.*;
-import com.telerik.payment_system.models.viewModels.BillViewModel;
-import com.telerik.payment_system.models.viewModels.SubscriberViewModel;
-import com.telerik.payment_system.repositories.base.BillRepository;
-import com.telerik.payment_system.repositories.base.SubscriberRepository;
-import com.telerik.payment_system.services.BankServiceImpl;
+import com.payment_system.entities.*;
+import com.payment_system.models.viewModels.BillViewModel;
+import com.payment_system.models.viewModels.SubscriberViewModel;
+import com.payment_system.repositories.base.BillRepository;
+import com.payment_system.repositories.base.SubscriberRepository;
+import com.payment_system.services.BankServiceImpl;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
