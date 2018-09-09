@@ -1,2 +1,2 @@
 # TelerikFinalProject
-![alt text](http://https://imgur.com/a/Zl6AdeH)
+![alt text](https://imgur.com/77oKA4T)
