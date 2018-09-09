@@ -28,7 +28,6 @@ public class BillRecordBindingModel {
     @NotNull
     private String currencyName;
 
-    @NotNull
     private Date paymentDate;
 
     public Service getService() {
