@@ -26,7 +26,6 @@ public class UserEditBindingModel {
     @NotNull
     private String email;
 
-    @NotNull
     private List<Role> roles;
 
 

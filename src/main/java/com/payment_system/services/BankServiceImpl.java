@@ -159,7 +159,7 @@ public class BankServiceImpl implements BankService {
     @Override
     public Set<String> getAllServices(String phoneNumber, long bankId) {
 
-        List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(bankId, phoneNumber);
+        List<Bill> bills = billRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumber(bankId, phoneNumber);
 
         Set<String> services = new HashSet<>();
         for (Bill bill : bills) {
