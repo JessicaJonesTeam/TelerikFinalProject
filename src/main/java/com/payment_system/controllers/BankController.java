@@ -132,7 +132,7 @@ public class BankController {
 
     //has frontend
     @GetMapping("subscribers/pay/{phoneNumber}/{billId}")
-    public void payAllBillsById(
+    public void payBillById(
             @PathVariable("phoneNumber") String phoneNumber,
             @PathVariable("billId") int billId,
             HttpServletRequest request) {

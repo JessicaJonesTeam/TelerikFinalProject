@@ -70,7 +70,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         config.addAllowedHeader("Access-Control-Allow-Origin");
         config.addAllowedHeader("Authorization");
         config.addAllowedHeader("Content-type");
-        config.addAllowedOrigin("http://127.0.0.1:8080");
+        config.addAllowedOrigin("http://127.0.0.1:8081");
         config.addAllowedMethod("*");
 
         source.registerCorsConfiguration("/**", config);
