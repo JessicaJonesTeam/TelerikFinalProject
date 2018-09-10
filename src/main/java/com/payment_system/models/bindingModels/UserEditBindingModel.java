@@ -20,8 +20,6 @@ public class UserEditBindingModel {
     @NotNull
     private String password;
 
-    @Size(min =13,max = 15,message = Constants.EIK_LENGTH)
-    @NotNull
     private String EIK;
 
     @Pattern(regexp = "^[A-Za-z0-9][A-Za-z0-9.-_]*[A-Za-z0-9]@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\\w+$", message = Constants.INVALID_EMAIL)
