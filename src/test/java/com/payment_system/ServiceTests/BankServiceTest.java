@@ -188,7 +188,7 @@ public class BankServiceTest {
         bills.add(new Bill(service1, new Subscriber(), new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), 1, new Currency(), new Date(System.currentTimeMillis())));
         bills.add(new Bill(service2, new Subscriber(), new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), 2, new Currency(), new Date(System.currentTimeMillis())));
 
-        Mockito.when(mockBillRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumberAndPaymentDateIsNotNullOrderByPaymentDateDesc(1L, "0123456789"))
+        Mockito.when(mockBillRepository.getAllBySubscriber_Bank_IdAndSubscriber_PhoneNumber(1L, "0123456789"))
                 .thenReturn(bills);
 
         Set<String> result = mockBankService.getAllServices("0123456789", 1L);
