@@ -1,15 +1,21 @@
-pipeline {
-    agent {
-        docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
+  pipeline {
+    agent any
     stages {
-        stage('Build') {
-            steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
+      stage('Test') {
+        steps {
+          sh 'node -v'
+          sh 'npm prune'
+          sh 'npm install'
+          sh 'snyk test'
         }
+      }
+      stage('Build') {
+        steps {
+          sh 'snyk monitor'
+        }
+      }
     }
-}
+    environment {
+      SNYK_TOKEN = credentials('SNYK_TOKEN')
+    }
+  }
