@@ -3,7 +3,6 @@ pipeline {
   stages {
     stage('Test') {
       steps {
-        sh 'npm prune'
         sh 'npm install -g snyk'
         sh 'snyk test'
       }
