@@ -4,7 +4,6 @@ pipeline {
     stage('Test') {
       steps {
         sh 'sudo npm install -g snyk'
-        sh 'snyk auth'
         sh 'snyk test'
       }
     }
