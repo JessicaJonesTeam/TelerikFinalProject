@@ -152,8 +152,13 @@
               <goal>build-classpath</goal>
             </goals>
             <configuration>
-              <!-- configure the plugin here -->
-            </configuration>
+   <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}</artifactId>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                            </artifactItems>            </configuration>
           </execution>
         </executions>
       </plugin>
